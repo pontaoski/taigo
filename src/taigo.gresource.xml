@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/me/appadeia/Taigo">
+    <file>window.ui</file>
+    <file>status.ui</file>
+    <file>food.ui</file>
+
+    <file>css/app.css</file>
+
+    <file>icons/scalable/actions/heart-filled-symbolic.svg</file>
+    <file>icons/scalable/actions/restaurant-symbolic.svg</file>
+    <file>icons/scalable/actions/folder-symbolic.svg</file>
+
+    <file>images/bgs/home.svg</file>
+
+    <file>images/taigochi/Taikocha/normal.svg</file>
+    <file>images/taigochi/Taikoche/normal.svg</file>
+    <file>images/taigochi/Taikochi/normal.svg</file>
+  </gresource>
+</gresources>

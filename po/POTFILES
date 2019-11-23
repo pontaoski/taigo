@@ -1,0 +1,7 @@
+data/me.appadeia.Taigo.desktop.in
+data/me.appadeia.Taigo.appdata.xml.in
+data/me.appadeia.Taigo.gschema.xml
+src/window.ui
+src/main.vala
+src/window.vala
+

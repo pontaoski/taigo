@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.22.1 -->
+<interface>
+  <requires lib="gtk+" version="3.20"/>
+  <object class="GtkImage" id="image1">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="icon_name">heart-filled-symbolic</property>
+  </object>
+  <object class="GtkImage" id="image2">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="icon_name">restaurant-symbolic</property>
+  </object>
+  <object class="GtkImage" id="image3">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="icon_name">folder-symbolic</property>
+  </object>
+  <template class="TaigoWindow" parent="GtkApplicationWindow">
+    <property name="can_focus">False</property>
+    <property name="resizable">False</property>
+    <property name="default_width">360</property>
+    <property name="default_height">576</property>
+    <child type="titlebar">
+      <object class="GtkHeaderBar" id="header_bar">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="show_close_button">True</property>
+        <child>
+          <object class="GtkImage" id="status_icon">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="icon_name">face-worried-symbolic</property>
+            <property name="icon_size">5</property>
+          </object>
+        </child>
+        <child type="title">
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <object class="GtkButton" id="heart">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="image">image1</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="eat">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="image">image2</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="image">image3</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <style>
+              <class name="linked"/>
+            </style>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkOverlay">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <child>
+          <object class="GtkImage" id="bg">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="resource">/me/appadeia/Taigo/images/bgs/home.svg</property>
+          </object>
+          <packing>
+            <property name="index">-1</property>
+          </packing>
+        </child>
+        <child type="overlay">
+          <object class="GtkImage" id="taigochi_img">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="halign">center</property>
+            <property name="valign">end</property>
+            <property name="margin_bottom">30</property>
+            <property name="resource">/me/appadeia/Taigo/images/taigochi/taikoche/normal.svg</property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>
