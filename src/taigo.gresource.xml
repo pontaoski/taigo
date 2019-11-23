@@ -4,17 +4,25 @@
     <file>window.ui</file>
     <file>status.ui</file>
     <file>food.ui</file>
+    <file>game.ui</file>
 
     <file>css/app.css</file>
 
     <file>icons/scalable/actions/heart-filled-symbolic.svg</file>
     <file>icons/scalable/actions/restaurant-symbolic.svg</file>
     <file>icons/scalable/actions/folder-symbolic.svg</file>
+    <file>icons/scalable/actions/gamepad-symbolic.svg</file>
+    <file>icons/scalable/actions/arrow1-left-symbolic.svg</file>
+    <file>icons/scalable/actions/arrow1-right-symbolic.svg</file>
 
     <file>images/bgs/home.svg</file>
 
     <file>images/taigochi/Taikocha/normal.svg</file>
     <file>images/taigochi/Taikoche/normal.svg</file>
     <file>images/taigochi/Taikochi/normal.svg</file>
+
+    <file>images/taigochi/Taikocha/blink.svg</file>
+    <file>images/taigochi/Taikoche/blink.svg</file>
+    <file>images/taigochi/Taikochi/blink.svg</file>
   </gresource>
 </gresources>

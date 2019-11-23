@@ -51,6 +51,7 @@ namespace Taigo {
         public Genders gender;
         public int age;
         public Taigos type;
+        public int weight {get; set;}
 
         // Other
         public int care_misses;
@@ -60,6 +61,7 @@ namespace Taigo {
 
             this.hunger = 0;
             this.happy = 0;
+            this.weight = 0;
             
             this.age = 0;
             
@@ -68,21 +70,64 @@ namespace Taigo {
             this.gender = Utils.gender_from_taigo_type(this.type);
         }
 
+        public void verify() {
+            if (this.hunger < 0)
+                this.hunger = 0;
+            if (this.hunger > 4)
+                this.hunger = 4;
+            if (this.happy < 0)
+                this.happy = 0;
+            if (this.happy > 4)
+                this.happy = 4;
+            if (this.weight < 0)
+                this.weight = 0;
+            
+            this.notify_property("weight");
+            this.notify_property("happy");
+            this.notify_property("hunger");
+        }
+
+        public void feed() {
+            if (this.hunger == 4) {
+                this.weight++;
+                this.notify_property("weight");
+            }
+            hunger ++;
+            verify();
+        }
+        public void game() {
+            happy = happy + Random.double_range(0.5, 1.5);
+            this.weight--;
+            this.notify_property("weight");
+            verify();
+        }
+        public void treat() {
+            feed();
+            game();
+
+            this.weight += 3;
+            this.notify_property("weight");
+            verify();
+        }
+        public string complaints() {
+            string a = "";
+            if (hunger <= 2)
+                a += "Feed me!\n";
+            if (happy <= 2)
+                a += "Play with me!\n";
+            if (weight >= 4)
+                a += "I'm fat!\n";
+            return a.strip();
+        }
+
         public void tick() {
             if (Random.int_range(0, 3) == 2) {
                 this.hunger--;
-                if (this.hunger < 0)
-                    this.hunger = 0;
-                if (this.hunger > 4)
-                    this.hunger = 4;
             }
             if (Random.int_range(0, 2) == 1) {
                 this.happy = this.happy - Random.double_range(0.1, 1);
-                if (this.happy < 0)
-                    this.happy = 0;
-                if (this.happy > 4)
-                    this.happy = 4;
             }
+            verify();
         }
 
         public Mood calc_mood() {
@@ -107,7 +152,6 @@ namespace Taigo {
 
         public Taigochi.from_baby() {
             int rand = Random.int_range(0, 3);
-            print(rand.to_string() + "\n");
             switch (rand) {
                 case 0:
                     this.type = Taigos.TAIKOCHI;

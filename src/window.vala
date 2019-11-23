@@ -17,6 +17,30 @@
  */
 
 namespace Taigo {
+	[GtkTemplate (ui = "/me/appadeia/Taigo/game.ui")]
+	public class Play : Gtk.Popover {
+		public signal void won();
+
+		[GtkChild]
+		public Gtk.Image flippy;
+
+		[GtkCallback]
+		private void gamey() {
+			if(Random.int_range(0, 2) == 1) {
+				won();
+			}
+		}
+
+		public Play() {
+			Timeout.add(500, () => {
+				Gdk.Pixbuf pix = flippy.get_pixbuf();
+				Gdk.Pixbuf flip = pix.flip(true);
+				flippy.set_from_pixbuf(flip);
+				return true;
+			}, Priority.DEFAULT);
+		}
+	}
+
 	[GtkTemplate (ui = "/me/appadeia/Taigo/food.ui")]
 	public class Food : Gtk.Popover {
 		public signal void feed_meal ();
@@ -24,13 +48,11 @@ namespace Taigo {
 
 		[GtkCallback]
 		private void meal() {
-			print("food\n");
 			feed_meal();
 		}
 
 		[GtkCallback]
 		private void treat() {
-			print("desert\n");
 			feed_treat();
 		}
 	}
@@ -47,6 +69,9 @@ namespace Taigo {
 		public Gtk.Label gender;
 
 		[GtkChild]
+		public Gtk.Label weight;
+
+		[GtkChild]
 		public Gtk.Label tg_name;
 	}
 
@@ -61,13 +86,23 @@ namespace Taigo {
 		Gtk.Button eat;
 
 		[GtkChild]
+		Gtk.Button play;
+
+		[GtkChild]
 		Gtk.Image taigochi_img;
 
 		[GtkChild]
 		Gtk.Image status_icon;
 
+		[GtkChild]
+		Gtk.Popover complain;
+
+		[GtkChild]
+		Gtk.Label complain_label;
+
 		protected Status status;
 		protected Food food;
+		protected Play game;
 
 		//  [GtkCallback]
 		//  private void tick() {
@@ -77,8 +112,16 @@ namespace Taigo {
 		protected void init_taikochi() {
 			this.taigochi = new Taigochi.from_baby();
 			this.taigochi_img.resource = this.taigochi.get_image_name("normal");
+			this.game.flippy.resource = this.taigochi.get_image_name("normal");
+
 			this.taigochi.bind_property("hunger", status.food, "value", BindingFlags.DEFAULT);
 			this.taigochi.bind_property("happy", status.happy, "value", BindingFlags.DEFAULT);
+
+			this.taigochi.notify.connect((s, p) => {
+				if (p.name == "weight") {
+					status.weight.set_text("%dg".printf(this.taigochi.weight));
+				}
+			});
 
 			this.status.tg_name.set_text(Utils.names[this.taigochi.type]);
 
@@ -92,6 +135,30 @@ namespace Taigo {
 			this.taigochi.hunger = 0.1;
 			this.taigochi.happy = 0.1;
 
+			Timeout.add_seconds(5, () => {
+				var str = this.taigochi.complaints();
+				complain.relative_to = this.taigochi_img;
+				if (str != "") {
+					complain_label.set_text(str);
+					if (Random.int_range(0, 1000) == 1) {
+						complain_label.set_text("I will share controversial political\nopinions if you don't take care of me.");
+					}
+					complain.show_all();
+					return true;
+				} else {
+					complain.hide();
+				}
+				return true;
+			}, Priority.DEFAULT);
+			Timeout.add(3273, () => {
+				this.taigochi_img.resource = this.taigochi.get_image_name("blink");
+				Timeout.add(Random.int_range(100,500), () => {
+					this.taigochi_img.resource = this.taigochi.get_image_name("normal");
+					return false;
+				}, Priority.DEFAULT);
+
+				return true;
+			}, Priority.DEFAULT);
 			Timeout.add_seconds(300, () => {
 				this.taigochi.tick();
 				return true;
@@ -139,12 +206,21 @@ namespace Taigo {
 				food.show_all();
 			});
 
+			game = new Taigo.Play();
+			game.relative_to = play;
+			play.clicked.connect(() => {
+				game.show_all();
+			});
+
 			food.feed_meal.connect(() => {
-				this.taigochi.hunger ++;
+				this.taigochi.feed();
 			});
 			food.feed_treat.connect(() => {
-				this.taigochi.hunger ++;
-				this.taigochi.happy = this.taigochi.happy + Random.double_range(0.5, 1.5);
+				this.taigochi.treat();
+			});
+
+			game.won.connect(() => {
+				this.taigochi.game();
 			});
 
 			this.init_taikochi();
