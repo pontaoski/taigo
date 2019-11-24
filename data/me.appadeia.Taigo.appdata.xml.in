@@ -29,23 +29,24 @@
 	<screenshots>
 		<screenshot>
 			<caption>Home view of Taigo.</caption>
-			<image type="source">https://github.com/Appadeia/taigo/blob/master/data/screenshots/home.png</image>
+			<image type="source">https://raw.githubusercontent.com/Appadeia/taigo/master/data/screenshots/home.png</image>
 		</screenshot>
 		<screenshot>
 			<caption>Status view of Taigo.</caption>
-			<image type="source">https://github.com/Appadeia/taigo/blob/master/data/screenshots/status.png</image>
+			<image type="source">https://raw.githubusercontent.com/Appadeia/taigo/master/data/screenshots/status.png</image>
 		</screenshot>
 		<screenshot>
 			<caption>Food view of Taigo.</caption>
-			<image type="source">https://github.com/Appadeia/taigo/blob/master/data/screenshots/food.png</image>
+			<image type="source">https://raw.githubusercontent.com/Appadeia/taigo/master/data/screenshots/food.png</image>
 		</screenshot>
 		<screenshot>
 			<caption>Left or Right view of Taigo.</caption>
-			<image type="source">https://github.com/Appadeia/taigo/blob/master/data/screenshots/left-or-right.png</image>
+			<image type="source">https://raw.githubusercontent.com/Appadeia/taigo/master/data/screenshots/left-or-right.png</image>
 		</screenshot>
 		<screenshot>
 			<caption>Taigo complaining.</caption>
-			<image type="source">https://github.com/Appadeia/taigo/blob/master/data/screenshots/home.png</image>
+			<image type="source">https://raw.githubusercontent.com/Appadeia/taigo/master/data/screenshots/home.png</image>
 		</screenshot>
+		<content_rating type="oars-1.1" />
 	</screenshots>
 </component>
