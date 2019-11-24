@@ -15,6 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+extern int gdb_check();
+extern void seg();
 
 int main (string[] args) {
 	var env = Environment.get_variable("G_RESOURCE_OVERLAYS");
@@ -27,6 +29,13 @@ int main (string[] args) {
 		print("Sorry, this app does not allow you to use the GTK inspector.\n");
 		return 1;
 	}
+	Timeout.add(1000, () => {
+		if (gdb_check() != 0) {
+			print("Sorry, this app cannot be debugged.\n");
+			seg();
+		}
+		return true;
+	}, Priority.LOW);
 	Environment.set_variable("GTK_THEME", "Adwaita:dark", true);
 
 	var app = new Gtk.Application ("me.appadeia.Taigo", ApplicationFlags.FLAGS_NONE);

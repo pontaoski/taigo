@@ -2,6 +2,7 @@ taigo_sources = [
   'main.vala',
   'window.vala',
   'taigochi.vala',
+  'gdb.c',
 ]
 
 taigo_deps = [
