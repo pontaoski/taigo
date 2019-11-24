@@ -15,12 +15,13 @@
         <property name="orientation">vertical</property>
         <property name="spacing">10</property>
         <child>
-          <object class="GtkButton">
-            <property name="label" translatable="yes">Meal</property>
+          <object class="GtkLabel">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <signal name="clicked" handler="meal" swapped="no"/>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">Feed your Taigochi</property>
+            <style>
+              <class name="title-2"/>
+            </style>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -29,12 +30,60 @@
           </packing>
         </child>
         <child>
-          <object class="GtkButton">
-            <property name="label" translatable="yes">Desert</property>
+          <object class="GtkGrid">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <signal name="clicked" handler="treat" swapped="no"/>
+            <property name="can_focus">False</property>
+            <property name="row_spacing">10</property>
+            <property name="column_spacing">10</property>
+            <property name="column_homogeneous">True</property>
+            <child>
+              <object class="GtkImage" id="meal_img">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="resource">/me/appadeia/Taigo/images/animations/meal/idle.svg</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkImage" id="treat_img">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="resource">/me/appadeia/Taigo/images/animations/treat/idle.svg</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="meal_btn">
+                <property name="label" translatable="yes">Meal</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <signal name="clicked" handler="meal" swapped="no"/>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="treat_btn">
+                <property name="label" translatable="yes">Desert</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <signal name="clicked" handler="treat" swapped="no"/>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">1</property>
+              </packing>
+            </child>
           </object>
           <packing>
             <property name="expand">False</property>

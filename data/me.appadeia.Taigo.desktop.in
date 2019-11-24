@@ -1,6 +1,7 @@
 [Desktop Entry]
-Name=taigo
+Name=Taigo
 Exec=taigo
+Icon=me.appadeia.Taigo
 Terminal=false
 Type=Application
 Categories=GTK;

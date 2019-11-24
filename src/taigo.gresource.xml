@@ -24,5 +24,18 @@
     <file>images/taigochi/Taikocha/blink.svg</file>
     <file>images/taigochi/Taikoche/blink.svg</file>
     <file>images/taigochi/Taikochi/blink.svg</file>
+
+    <file>images/animations/meal/idle.svg</file>
+    <file>images/animations/treat/idle.svg</file>
+    <file>images/animations/meal/eat-1.svg</file>
+    <file>images/animations/treat/eat-1.svg</file>
+    <file>images/animations/meal/eat-2.svg</file>
+    <file>images/animations/treat/eat-2.svg</file>
+    <file>images/animations/meal/eat-3.svg</file>
+    <file>images/animations/treat/eat-3.svg</file>
+    <file>images/animations/meal/eat-4.svg</file>
+    <file>images/animations/treat/eat-4.svg</file>
+    <file>images/animations/meal/blank.svg</file>
+    <file>images/animations/treat/blank.svg</file>
   </gresource>
 </gresources>

@@ -28,6 +28,7 @@ int main (string[] args) {
 		Gtk.Settings.get_default ().set ("gtk-icon-theme-name", "Adwaita");
 		Gtk.Settings.get_default ().set ("gtk-font-name", "Cantarell 11");
 		Gtk.Settings.get_default ().set ("gtk-decoration-layout", ":close");
+		Gtk.Settings.get_default ().set ("gtk-dialogs-use-header", true);
 		win.present ();
 	});
 

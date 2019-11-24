@@ -22,6 +22,7 @@
     <property name="resizable">False</property>
     <property name="default_width">360</property>
     <property name="default_height">576</property>
+    <signal name="destroy" handler="save" swapped="no"/>
     <child type="titlebar">
       <object class="GtkHeaderBar" id="header_bar">
         <property name="visible">True</property>
@@ -31,7 +32,6 @@
           <object class="GtkImage" id="status_icon">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="icon_name">face-worried-symbolic</property>
             <property name="icon_size">5</property>
           </object>
         </child>
@@ -89,10 +89,24 @@
             </style>
           </object>
         </child>
+        <child>
+          <object class="GtkMenuButton" id="hamberder">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="pack_type">end</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
       </object>
     </child>
     <child>
-      <object class="GtkOverlay">
+      <object class="GtkOverlay" id="overlay">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <child>

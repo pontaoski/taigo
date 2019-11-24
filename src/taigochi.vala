@@ -48,13 +48,13 @@ namespace Taigo {
         public double happy {get; set;}
         
         // About
-        public Genders gender;
-        public int age;
-        public Taigos type;
+        public int gender {get; set;}
+        public int age {get; set;}
+        public int ttype {get; set;}
         public int weight {get; set;}
 
         // Other
-        public int care_misses;
+        public int care_misses {get; set;}
 
         protected void _init() {
             Utils.init();
@@ -67,7 +67,7 @@ namespace Taigo {
             
             this.care_misses = 0;
 
-            this.gender = Utils.gender_from_taigo_type(this.type);
+            this.gender = Utils.gender_from_taigo_type((Taigos) this.ttype);
         }
 
         public void verify() {
@@ -146,7 +146,7 @@ namespace Taigo {
 
         public string get_image_name(string state) {
             const string resource_root = "/me/appadeia/Taigo/images/taigochi";
-            var str = "%s/%s/%s.svg".printf(resource_root, Utils.names[this.type], state);
+            var str = "%s/%s/%s.svg".printf(resource_root, Utils.names[(Taigos) ttype], state);
             return str;
         }
 
@@ -154,16 +154,81 @@ namespace Taigo {
             int rand = Random.int_range(0, 3);
             switch (rand) {
                 case 0:
-                    this.type = Taigos.TAIKOCHI;
+                    ttype = Taigos.TAIKOCHI;
                     break;
                 case 1:
-                    this.type = Taigos.TAIKOCHA;
+                    ttype = Taigos.TAIKOCHA;
                     break;
                 case 2:
-                    this.type = Taigos.TAIKOCHE;
+                    ttype = Taigos.TAIKOCHE;
                     break;
             }
             this._init();
+        }
+        public void save() {
+            var path = Path.build_path("/", Environment.get_user_data_dir(), "taigo", "saves", "taigo.tk");
+            var path2 = Path.build_path("/", Environment.get_user_data_dir(), "taigo", "saves");
+
+            var dir = File.new_for_path(path2);
+            try {
+                dir.make_directory_with_parents();
+            } catch {}
+
+            try {
+                var obj_serialised = Json.gobject_to_data(this, null);
+                var stream = FileStream.open(path, "w");
+                
+                stream.puts(obj_serialised);
+            } catch (Error e) {
+                print("%s\n", e.message);
+            }
+        }
+        public Taigochi() {
+            var path = Path.build_path("/", Environment.get_user_data_dir(), "taigo", "saves", "taigo.tk");
+            try {
+                string content;
+                FileUtils.get_contents(path, out content);
+                if (content == "") {
+                    throw new FileError.INVAL("blank");
+                }
+                Taigochi obj = Json.gobject_from_data(typeof(Taigochi), content) as Taigochi;
+                assert (obj != null);
+
+                this.hunger = obj.hunger;
+                this.happy = obj.happy;
+                this.weight = obj.weight;
+                this.age = obj.age;
+                this.care_misses = obj.care_misses;
+                this.gender = obj.gender;
+                this.ttype = obj.ttype;
+
+                Utils.init();
+            } catch {
+                print("randing\n");
+                int rand = Random.int_range(0, 3);
+                switch (rand) {
+                    case 0:
+                        ttype = Taigos.TAIKOCHI;
+                        break;
+                    case 1:
+                        ttype = Taigos.TAIKOCHA;
+                        break;
+                    case 2:
+                        ttype = Taigos.TAIKOCHE;
+                        break;
+                }
+                this._init();
+            }
+            Timeout.add(100, () => {
+                this.notify_property("weight");
+                this.notify_property("age");
+                this.notify_property("care_misses");
+                this.notify_property("gender");
+                this.notify_property("ttype");
+                this.notify_property("hunger");
+                this.notify_property("happy");
+                return false;
+            }, Priority.DEFAULT);
         }
     }
 }
