@@ -275,11 +275,25 @@ namespace Taigo {
 			Object (application: app);
             var css_provider = new Gtk.CssProvider ();
             css_provider.load_from_resource ("/me/appadeia/Taigo/css/app.css");
-            
+			
+			var adwaita_provider = new Gtk.CssProvider();
+			css_provider.load_from_resource ("/org/gtk/libgtk/theme/Adwaita/gtk-contained-dark.css");
+
+			var quit_action = new SimpleAction("quit", null);
+			quit_action.activate.connect(() => {
+				app.quit();
+			});
+
+            Gtk.StyleContext.add_provider_for_screen (
+                Gdk.Screen.get_default (),
+                adwaita_provider,
+                900
+			);
+
             Gtk.StyleContext.add_provider_for_screen (
                 Gdk.Screen.get_default (),
                 css_provider,
-                Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+                1000
 			);
 			
 			status = new Taigo.Status();
