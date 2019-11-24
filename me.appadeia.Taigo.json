@@ -34,7 +34,8 @@
             "sources": [
                 {
                     "type": "git",
-                    "url": "file:///home/cdblack/Projects/taigo"
+                    "url": "https://github.com/Appadeia/taigo.git",
+                    "tag": "0.1"
                 }
             ]
         }
