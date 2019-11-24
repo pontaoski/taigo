@@ -6,6 +6,7 @@
 	<metadata_license>CC0-1.0</metadata_license>
 	<project_license>GPL-3.0-or-later</project_license>
 	<summary>Taigo is a virtual pet for your desktop</summary>
+	<url>https://github.com/appadeia/taigo</url>
 	<description>
 		<p>
 			Taigo is a virtual pet for your desktop that you need to take care of.
@@ -47,6 +48,6 @@
 			<caption>Taigo complaining</caption>
 			<image type="source">https://raw.githubusercontent.com/Appadeia/taigo/master/data/screenshots/complaining.png</image>
 		</screenshot>
-		<content_rating type="oars-1.1" />
 	</screenshots>
+	<content_rating type="oars-1.1" />
 </component>
