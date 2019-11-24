@@ -1,8 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop">
+	<icon type="remote" width="128" height="128">https://raw.githubusercontent.com/Appadeia/taigo/master/data/me.appadeia.Taigo.svg</icon>
+	<name>Taigo</name>
 	<id>me.appadeia.Taigo.desktop</id>
 	<metadata_license>CC0-1.0</metadata_license>
 	<project_license>GPL-3.0-or-later</project_license>
+	<summary>
+		Taigo is a virtual pet for your desktop.
+	</summary>
 	<description>
+		<p>
+			Taigo is a virtual pet for your desktop that you need to take care of.
+		</p>
 	</description>
+	<releases>
+		<release version="0.1" date="2019-11-23" urgency="high">
+			<description>
+				<h1>Taigo Ichi</h1>
+				<p>
+					This is the initial version of Taigo. This version includes:
+				</p>
+				<ul>
+					<li>Feeding your Taigo</li>
+					<li>3 Taigos</li>
+					<li>Playing with your Taigo</li>
+				</ul>
+			</description>
+		</release>
+	</releases>
 </component>
