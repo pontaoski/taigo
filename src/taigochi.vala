@@ -69,15 +69,21 @@ namespace Taigo {
         protected void init_move() {
             int offset = 0;
 			Timeout.add(1000, () => {
-                offset += Random.int_range(-1, 2);
-                if (offset < -2)
-                    offset = -2;
-                if (offset > 2)
-                    offset = 2;
-                self_img.x = calc_center(scene.get_stage(), self_img, false) + (offset * 20);
-                self_img.y = calc_bottom(scene.get_stage(), self_img) - 30;
-                complain.x = calc_center(scene.get_stage(), self_img, false) + (offset * 20);
-                complain.y = self_img.y - complain.height - 20;
+                offset += Random.int_range(-2, 3);
+                if (offset < -5)
+                    offset = -5;
+                if (offset > 5)
+                    offset = 5;
+                self_img.animate(
+                    Clutter.AnimationMode.EASE_IN_OUT_CUBIC, 100, 
+                    "x", calc_center(scene.get_stage(), self_img, false) + (offset * 20),
+                    "y", calc_bottom(scene.get_stage(), self_img) - 30
+                );
+                complain.animate(
+                    Clutter.AnimationMode.EASE_IN_OUT_CUBIC, 100, 
+                    "x", calc_center(scene.get_stage(), self_img, false) + (offset * 20),
+                    "y", complain.y = self_img.y - complain.height - 20
+                );
 				return true;
 			}, Priority.DEFAULT);
         }
