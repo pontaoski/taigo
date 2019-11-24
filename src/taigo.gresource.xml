@@ -4,6 +4,8 @@
     <file>window.ui</file>
     <file>status.ui</file>
     <file>food.ui</file>
+    <file>debuglabel.ui</file>
+    <file>debugwindow.ui</file>
     <file>game.ui</file>
 
     <file>css/app.css</file>
@@ -20,10 +22,12 @@
     <file>images/taigochi/Taikocha/normal.svg</file>
     <file>images/taigochi/Taikoche/normal.svg</file>
     <file>images/taigochi/Taikochi/normal.svg</file>
+    <file>images/taigochi/Molichi/normal.svg</file>
 
     <file>images/taigochi/Taikocha/blink.svg</file>
     <file>images/taigochi/Taikoche/blink.svg</file>
     <file>images/taigochi/Taikochi/blink.svg</file>
+    <file>images/taigochi/Molichi/blink.svg</file>
 
     <file>images/animations/meal/idle.svg</file>
     <file>images/animations/treat/idle.svg</file>

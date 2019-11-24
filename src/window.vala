@@ -17,6 +17,20 @@
  */
 
 namespace Taigo {
+	[GtkTemplate (ui = "/me/appadeia/Taigo/debugwindow.ui")]
+	public class DebugWindow : Gtk.Window {
+		[GtkChild]
+		public Gtk.Box keyval;
+	}
+
+	[GtkTemplate (ui = "/me/appadeia/Taigo/debuglabel.ui")]
+	public class DebugLabel : Gtk.Box {
+		[GtkChild]
+		public Gtk.Label key;
+		[GtkChild]
+		public Gtk.Label value;
+	}
+
 	[GtkTemplate (ui = "/me/appadeia/Taigo/game.ui")]
 	public class Play : Gtk.Popover {
 		public signal void won();
@@ -58,17 +72,17 @@ namespace Taigo {
 		[GtkCallback]
 		private void meal() {
 			meal_btn.sensitive = false;
-			Timeout.add(600, () => {
+			Timeout.add((Taigo.Globals.fastfoward ? 60 : 600), () => {
 				meal_img.resource = "/me/appadeia/Taigo/images/animations/meal/eat-1.svg";
-				Timeout.add(600, () => {
+				Timeout.add((Taigo.Globals.fastfoward ? 60 : 600), () => {
 					meal_img.resource = "/me/appadeia/Taigo/images/animations/meal/eat-2.svg";
-					Timeout.add(600, () => {
+					Timeout.add((Taigo.Globals.fastfoward ? 60 : 600), () => {
 						meal_img.resource = "/me/appadeia/Taigo/images/animations/meal/eat-3.svg";
-						Timeout.add(600, () => {
+						Timeout.add((Taigo.Globals.fastfoward ? 60 : 600), () => {
 							meal_img.resource = "/me/appadeia/Taigo/images/animations/meal/eat-4.svg";
-							Timeout.add(600, () => {
+							Timeout.add((Taigo.Globals.fastfoward ? 60 : 600), () => {
 								meal_img.resource = "/me/appadeia/Taigo/images/animations/meal/blank.svg";
-								Timeout.add(600, () => {
+								Timeout.add((Taigo.Globals.fastfoward ? 60 : 600), () => {
 									meal_img.resource = "/me/appadeia/Taigo/images/animations/meal/idle.svg";
 									meal_btn.sensitive = true;
 									return false;
@@ -89,17 +103,17 @@ namespace Taigo {
 		[GtkCallback]
 		private void treat() {
 			treat_btn.sensitive = false;
-			Timeout.add(600, () => {
+			Timeout.add((Taigo.Globals.fastfoward ? 60 : 600), () => {
 				treat_img.resource = "/me/appadeia/Taigo/images/animations/treat/eat-1.svg";
-				Timeout.add(600, () => {
+				Timeout.add((Taigo.Globals.fastfoward ? 60 : 600), () => {
 					treat_img.resource = "/me/appadeia/Taigo/images/animations/treat/eat-2.svg";
-					Timeout.add(600, () => {
+					Timeout.add((Taigo.Globals.fastfoward ? 60 : 600), () => {
 						treat_img.resource = "/me/appadeia/Taigo/images/animations/treat/eat-3.svg";
-						Timeout.add(600, () => {
+						Timeout.add((Taigo.Globals.fastfoward ? 60 : 600), () => {
 							treat_img.resource = "/me/appadeia/Taigo/images/animations/treat/eat-4.svg";
-							Timeout.add(600, () => {
+							Timeout.add((Taigo.Globals.fastfoward ? 60 : 600), () => {
 								treat_img.resource = "/me/appadeia/Taigo/images/animations/treat/blank.svg";
-								Timeout.add(600, () => {
+								Timeout.add((Taigo.Globals.fastfoward ? 60 : 600), () => {
 									treat_img.resource = "/me/appadeia/Taigo/images/animations/treat/idle.svg";
 									treat_btn.sensitive = true;
 									return false;
@@ -180,6 +194,24 @@ namespace Taigo {
 		[GtkCallback]
 		protected void save() {
 			this.taigochi.save();
+		}
+
+		protected void debug_win() {
+			var win = new Taigo.DebugWindow();
+			string[] property_list = { "hunger", "happy", "gender", "age", "ttype", "weight", "care-misses", "missed-calls" };
+			foreach(string s in property_list) {
+				var kv = new Taigo.DebugLabel();
+				kv.key.label = s;
+				this.taigochi.bind_property(s, kv.value, "label", BindingFlags.DEFAULT, (a,b, ref c) => {
+					if (b.holds(Type.DOUBLE))
+						c = "%f".printf(b.get_double());
+					if (b.holds(Type.INT))
+						c = "%d".printf(b.get_int());
+					return true;
+				});
+				win.keyval.add(kv);
+			}
+			win.show_all();
 		}
 
 		protected void init_taikochi(bool force_new = false) {
@@ -265,30 +297,23 @@ namespace Taigo {
 				}
 				return true;
 			}, Priority.DEFAULT);
-			Timeout.add_seconds(300, () => {
+			Timeout.add_seconds(Taigo.Globals.fastfoward ? 3 : 300, () => {
 				this.taigochi.tick();
 				return true;
 			}, Priority.DEFAULT);
+			if(Taigo.Globals.fastfoward)
+				this.debug_win();
 		}
 
 		public Window (Gtk.Application app) {
 			Object (application: app);
             var css_provider = new Gtk.CssProvider ();
             css_provider.load_from_resource ("/me/appadeia/Taigo/css/app.css");
-			
-			var adwaita_provider = new Gtk.CssProvider();
-			css_provider.load_from_resource ("/org/gtk/libgtk/theme/Adwaita/gtk-contained-dark.css");
 
 			var quit_action = new SimpleAction("quit", null);
 			quit_action.activate.connect(() => {
 				app.quit();
 			});
-
-            Gtk.StyleContext.add_provider_for_screen (
-                Gdk.Screen.get_default (),
-                adwaita_provider,
-                900
-			);
 
             Gtk.StyleContext.add_provider_for_screen (
                 Gdk.Screen.get_default (),

@@ -1,5 +1,5 @@
 namespace Taigo {
-    public enum Taigos { TAIKOCHI, TAIKOCHA, TAIKOCHE }
+    public enum Taigos { TAIKOCHI, TAIKOCHA, TAIKOCHE, MOLICHI }
     public enum Genders { MALE, FEMALE, ENBY }
     public enum Mood { BAD, OKAY, GOOD, GREAT, SICK }
 
@@ -34,6 +34,7 @@ namespace Taigo {
             names[Taigos.TAIKOCHI] = "Taikochi";
             names[Taigos.TAIKOCHA] = "Taikocha";
             names[Taigos.TAIKOCHE] = "Taikoche";
+            names[Taigos.MOLICHI] = "Molichi";
 
             male = { Taigos.TAIKOCHI };
             female = { Taigos.TAIKOCHA };
@@ -55,6 +56,7 @@ namespace Taigo {
 
         // Other
         public int care_misses {get; set;}
+        public int missed_calls {get; set;}
 
         protected void _init() {
             Utils.init();
@@ -66,6 +68,7 @@ namespace Taigo {
             this.age = 0;
             
             this.care_misses = 0;
+            this.missed_calls = 0;
 
             this.gender = Utils.gender_from_taigo_type((Taigos) this.ttype);
         }
@@ -88,6 +91,8 @@ namespace Taigo {
         }
 
         public void feed() {
+            if (this.ttype == Taigos.MOLICHI)
+                return;
             if (this.hunger == 4) {
                 this.weight++;
                 this.notify_property("weight");
@@ -96,12 +101,16 @@ namespace Taigo {
             verify();
         }
         public void game() {
+            if (this.ttype == Taigos.MOLICHI)
+                return;
             happy = happy + Random.double_range(0.5, 1.5);
             this.weight--;
             this.notify_property("weight");
             verify();
         }
         public void treat() {
+            if (this.ttype == Taigos.MOLICHI)
+                return;
             feed();
             game();
 
@@ -110,6 +119,8 @@ namespace Taigo {
             verify();
         }
         public string complaints() {
+            if (this.ttype == Taigos.MOLICHI)
+                return ". . .";
             string a = "";
             if (hunger <= 2)
                 a += "Feed me!\n";
@@ -121,6 +132,16 @@ namespace Taigo {
         }
 
         public void tick() {
+            if (complaints() != "") {
+                this.missed_calls++;
+            }
+            if (this.missed_calls > 3) {
+                this.care_misses++;
+                this.missed_calls = 0;
+            }
+            if (this.care_misses > 5) {
+                this.ttype = Taigos.MOLICHI;
+            }
             if (Random.int_range(0, 3) == 2) {
                 this.hunger--;
             }
@@ -131,6 +152,8 @@ namespace Taigo {
         }
 
         public Mood calc_mood() {
+            if (this.ttype == Taigos.MOLICHI)
+                return Mood.BAD;
             var mood = Mood.OKAY;
             if(hunger > 3 && happy > 3.5) {
                 mood = Mood.GREAT;
@@ -199,6 +222,7 @@ namespace Taigo {
                 this.weight = obj.weight;
                 this.age = obj.age;
                 this.care_misses = obj.care_misses;
+                this.missed_calls = obj.missed_calls;
                 this.gender = obj.gender;
                 this.ttype = obj.ttype;
 
@@ -223,6 +247,7 @@ namespace Taigo {
                 this.notify_property("weight");
                 this.notify_property("age");
                 this.notify_property("care_misses");
+                this.notify_property("missed_calls");
                 this.notify_property("gender");
                 this.notify_property("ttype");
                 this.notify_property("hunger");

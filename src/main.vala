@@ -39,6 +39,14 @@ int main (string[] args) {
 	Environment.set_variable("GTK_THEME", "Adwaita:dark", true);
 
 	var app = new Gtk.Application ("me.appadeia.Taigo", ApplicationFlags.FLAGS_NONE);
+	app.add_main_option("debugmode", (char) "d", OptionFlags.NONE, OptionArg.NONE, "Debug mode for Taigo.", null);
+	app.handle_local_options.connect((v) => {
+		print("%s\n", v.contains("debugmode").to_string());
+		
+		if (v.contains("debugmode"))
+			Taigo.Globals.fastfoward = true;
+		return -1;
+	});
 	app.activate.connect (() => {
 		var win = app.active_window;
 		if (win == null) {
@@ -47,7 +55,6 @@ int main (string[] args) {
 
 		bool ignore = false;
 		Gtk.Settings.get_default ().notify.connect((s, p) => {
-			print("notify\n");
 			if (ignore) {
 				GLib.Timeout.add(500, () => {
 					ignore = false;
