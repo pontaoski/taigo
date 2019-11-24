@@ -11,6 +11,8 @@ taigo_deps = [
   dependency('gtk+-3.0', version: '>= 3.22'),
   dependency('gee-0.8'),
   dependency('json-glib-1.0'),
+  dependency('clutter-gtk-1.0'),
+  dependency('clutter-1.0'),
 ]
 
 gnome = import('gnome')

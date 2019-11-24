@@ -1,3 +1,5 @@
+using Taigo.Globals;
+
 namespace Taigo {
     public enum Taigos { TAIKOCHI, TAIKOCHA, TAIKOCHE, MOLICHI }
     public enum Genders { MALE, FEMALE, ENBY }
@@ -57,6 +59,121 @@ namespace Taigo {
         // Other
         public int care_misses {get; set;}
         public int missed_calls {get; set;}
+
+        // Drawing
+        public Clutter.Actor self_img;
+        public Clutter.Actor bg;
+        public GtkClutter.Actor complain;
+        public Gtk.Label complain_text;
+
+        protected void init_move() {
+            int offset = 0;
+			Timeout.add(1000, () => {
+                offset += Random.int_range(-1, 2);
+                if (offset < -2)
+                    offset = -2;
+                if (offset > 2)
+                    offset = 2;
+                self_img.x = calc_center(scene.get_stage(), self_img, false) + (offset * 20);
+                self_img.y = calc_bottom(scene.get_stage(), self_img) - 30;
+                complain.x = calc_center(scene.get_stage(), self_img, false) + (offset * 20);
+                complain.y = self_img.y - complain.height - 20;
+				return true;
+			}, Priority.DEFAULT);
+        }
+        protected void init_blink() {
+			Timeout.add(3273, () => {
+                var pixbuf = new Gdk.Pixbuf.from_resource(this.get_image_name("blink"));
+                var img = new Clutter.Image();
+                img.set_data(
+                    pixbuf.get_pixels(),
+                    pixbuf.has_alpha ? Cogl.PixelFormat.RGBA_8888 : Cogl.PixelFormat.RGB_888,
+                    pixbuf.width,
+                    pixbuf.height,
+                    pixbuf.rowstride
+                );
+                self_img.content = img;
+                self_img.set_size (pixbuf.width, pixbuf.height);
+				Timeout.add(Random.int_range(100,500), () => {
+                    var _pixbuf = new Gdk.Pixbuf.from_resource(this.get_image_name("normal"));
+                    var _img = new Clutter.Image();
+                    _img.set_data(
+                        _pixbuf.get_pixels(),
+                        _pixbuf.has_alpha ? Cogl.PixelFormat.RGBA_8888 : Cogl.PixelFormat.RGB_888,
+                        _pixbuf.width,
+                        _pixbuf.height,
+                        _pixbuf.rowstride
+                    );
+                    self_img.content = _img;
+                    self_img.set_size (_pixbuf.width, _pixbuf.height);
+					return false;
+				}, Priority.DEFAULT);
+				return true;
+			}, Priority.DEFAULT);
+        }
+        protected void init_popover() {
+            var poppy = new Gtk.Popover(null);
+            poppy.modal = false;
+            complain_text = new Gtk.Label("");
+            complain_text.get_style_context().add_class("title-2");
+            complain_text.margin = 20;
+            poppy.add(complain_text);
+            poppy.show_all();
+            
+            complain = new GtkClutter.Actor.with_contents(poppy);
+            complain.hide();
+            scene.get_stage().add(complain);
+        }
+        protected void init_character() {
+            var pixbuf = new Gdk.Pixbuf.from_resource(this.get_image_name("normal"));
+            var img = new Clutter.Image();
+            img.set_data(
+                pixbuf.get_pixels(),
+                pixbuf.has_alpha ? Cogl.PixelFormat.RGBA_8888 : Cogl.PixelFormat.RGB_888,
+                pixbuf.width,
+                pixbuf.height,
+                pixbuf.rowstride
+            );
+            self_img = new Clutter.Actor ();
+            self_img.content = img;
+            self_img.set_size (pixbuf.width, pixbuf.height);
+            scene.get_stage().add(self_img);
+
+            self_img.x = calc_center(scene.get_stage(), self_img, false);
+            self_img.y = calc_bottom(scene.get_stage(), self_img) - 30;
+        }
+        protected void init_bg() {
+            var pixbuf = new Gdk.Pixbuf.from_resource("/me/appadeia/Taigo/images/bgs/home.svg");
+            var img = new Clutter.Image();
+            img.set_data(
+                pixbuf.get_pixels(),
+                pixbuf.has_alpha ? Cogl.PixelFormat.RGBA_8888 : Cogl.PixelFormat.RGB_888,
+                pixbuf.width,
+                pixbuf.height,
+                pixbuf.rowstride
+            );
+            bg = new Clutter.Actor ();
+            bg.content = img;
+            bg.set_size (pixbuf.width, pixbuf.height);
+            scene.get_stage().add(bg);
+        }
+        protected void init_clutter() {
+            this.init_bg();
+            this.init_character();
+            this.init_popover();
+            this.init_move();
+            this.init_blink();
+        }
+        protected float calc_bottom(Clutter.Actor parent, Clutter.Actor child) {
+            return (parent.get_height()) - (child.get_height());
+        }
+        protected float calc_center(Clutter.Actor parent, Clutter.Actor child, bool return_height) {
+            if (!return_height) {
+                return (parent.get_width() / 2) - (child.get_width() / 2);
+            } else {
+                return (parent.get_height() / 2) - (child.get_height() / 2);
+            }
+        }
 
         protected void _init() {
             Utils.init();
@@ -119,8 +236,6 @@ namespace Taigo {
             verify();
         }
         public string complaints() {
-            if (this.ttype == Taigos.MOLICHI)
-                return ". . .";
             string a = "";
             if (hunger <= 2)
                 a += "Feed me!\n";
@@ -128,6 +243,14 @@ namespace Taigo {
                 a += "Play with me!\n";
             if (weight >= 4)
                 a += "I'm fat!\n";
+            if (this.ttype == Taigos.MOLICHI)
+                a = ". . .";
+            complain_text.label = a;
+            if (a == "") {
+                complain.hide();
+            } else {
+                complain.show();
+            }
             return a.strip();
         }
 
@@ -187,6 +310,7 @@ namespace Taigo {
                     break;
             }
             this._init();
+            this.init_clutter();
         }
         public void save() {
             var path = Path.build_path("/", Environment.get_user_data_dir(), "taigo", "saves", "taigo.tk");
@@ -254,6 +378,7 @@ namespace Taigo {
                 this.notify_property("happy");
                 return false;
             }, Priority.DEFAULT);
+            this.init_clutter();
         }
     }
 }

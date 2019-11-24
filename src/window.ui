@@ -97,8 +97,6 @@
             <child>
               <placeholder/>
             </child>
-            <accelerator key="d" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
-            <accelerator key="i" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
           </object>
           <packing>
             <property name="pack_type">end</property>
@@ -108,35 +106,12 @@
       </object>
     </child>
     <child>
-      <object class="GtkOverlay" id="overlay">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <child>
-          <object class="GtkImage" id="bg">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="resource">/me/appadeia/Taigo/images/bgs/home.svg</property>
-          </object>
-          <packing>
-            <property name="index">-1</property>
-          </packing>
-        </child>
-        <child type="overlay">
-          <object class="GtkImage" id="taigochi_img">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="halign">center</property>
-            <property name="valign">end</property>
-            <property name="margin_bottom">30</property>
-            <property name="resource">/me/appadeia/Taigo/images/taigochi/taikoche/normal.svg</property>
-          </object>
-        </child>
-      </object>
+      <placeholder/>
     </child>
   </template>
   <object class="GtkPopover" id="complain">
     <property name="can_focus">False</property>
-    <property name="relative_to">taigochi_img</property>
+    <property name="relative_to">header_bar</property>
     <property name="modal">False</property>
     <child>
       <object class="GtkLabel" id="complain_label">

@@ -164,22 +164,10 @@ namespace Taigo {
 		Gtk.Button play;
 
 		[GtkChild]
-		Gtk.Image taigochi_img;
-
-		[GtkChild]
 		Gtk.Image status_icon;
 
 		[GtkChild]
-		Gtk.Popover complain;
-
-		[GtkChild]
-		Gtk.Label complain_label;
-
-		[GtkChild]
 		Gtk.MenuButton hamberder;
-
-		[GtkChild]
-		Gtk.Overlay overlay;
 
 		protected Status status;
 		protected Food food;
@@ -220,7 +208,6 @@ namespace Taigo {
 			} else {
 				this.taigochi = new Taigochi();
 			}
-			this.taigochi_img.resource = this.taigochi.get_image_name("normal");
 			this.game.flippy.resource = this.taigochi.get_image_name("normal");
 
 			this.taigochi.bind_property("hunger", status.food, "value", BindingFlags.DEFAULT);
@@ -257,44 +244,7 @@ namespace Taigo {
 						status_icon.icon_name = "face-sad-symbolic";
 						break;
 				}
-
-				var str = this.taigochi.complaints();
-				complain.relative_to = this.taigochi_img;
-				if (str != "") {
-					complain_label.set_text(str);
-					if (Random.int_range(0, 1000) == 1) {
-						complain_label.set_text("I will share controversial political\nopinions if you don't take care of me.");
-					}
-					complain.show_all();
-					return true;
-				} else {
-					complain.hide();
-				}
-				return true;
-			}, Priority.DEFAULT);
-			Timeout.add(3273, () => {
-				this.taigochi_img.resource = this.taigochi.get_image_name("blink");
-				Timeout.add(Random.int_range(100,500), () => {
-					this.taigochi_img.resource = this.taigochi.get_image_name("normal");
-					return false;
-				}, Priority.DEFAULT);
-
-				return true;
-			}, Priority.DEFAULT);
-			Timeout.add(1000, () => {
-				offset += Random.int_range(-1, 2);
-				if (offset < -2)
-					offset = -2;
-				if (offset > 2)
-					offset = 2;
-
-				if (offset < 0) {
-					this.taigochi_img.margin_left = 0;
-					this.taigochi_img.margin_right = (int) Math.fabs((double) offset) * 50;
-				} else {
-					this.taigochi_img.margin_right = 0;
-					this.taigochi_img.margin_left = (int) Math.fabs((double) offset) * 50;
-				}
+				this.taigochi.complaints();
 				return true;
 			}, Priority.DEFAULT);
 			Timeout.add_seconds(Taigo.Globals.fastfoward ? 3 : 300, () => {
@@ -391,14 +341,19 @@ namespace Taigo {
 			var nowy = new SimpleAction("new", null);
 			app.add_action(nowy);
 
+			Globals.scene = new GtkClutter.Embed();
+			Globals.scene.show_all();
+			Globals.scene.get_stage().set_size(360, 576);
+			this.add(Globals.scene);
+
 			nowy.activate.connect(() => {
 				var dialog = new Gtk.MessageDialog(this, Gtk.DialogFlags.MODAL, Gtk.MessageType.WARNING, Gtk.ButtonsType.YES_NO, "Are you sure you want to delete your Taigochi and make a new one? This cannot be undone.");
 				dialog.response.connect((a) => {
 					if (a == Gtk.ResponseType.YES) {
 						this.init_taikochi(true);
-						overlay.hide();
+						Globals.scene.hide();
 						Timeout.add(1000, () => {
-							overlay.show();
+							Globals.scene.show();
 							return false;
 						}, Priority.DEFAULT);
 					}

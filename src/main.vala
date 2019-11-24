@@ -19,6 +19,9 @@ extern int gdb_check();
 extern void seg();
 
 int main (string[] args) {
+
+	Clutter.init(ref args);
+
 	var env = Environment.get_variable("G_RESOURCE_OVERLAYS");
 	if (env != null) {
 		print("Sorry, this app does not allow you to overlay resources.\n");
