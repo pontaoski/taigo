@@ -5,9 +5,7 @@
 	<id>me.appadeia.Taigo.desktop</id>
 	<metadata_license>CC0-1.0</metadata_license>
 	<project_license>GPL-3.0-or-later</project_license>
-	<summary>
-		Taigo is a virtual pet for your desktop.
-	</summary>
+	<summary>Taigo is a virtual pet for your desktop</summary>
 	<description>
 		<p>
 			Taigo is a virtual pet for your desktop that you need to take care of.
