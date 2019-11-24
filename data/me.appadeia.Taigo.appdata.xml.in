@@ -28,4 +28,26 @@
 			</description>
 		</release>
 	</releases>
+	<screenshots>
+		<screenshot>
+			<caption>Home view of Taigo.</caption>
+			<image type="source">https://github.com/Appadeia/taigo/blob/master/data/screenshots/home.png</image>
+		</screenshot>
+		<screenshot>
+			<caption>Status view of Taigo.</caption>
+			<image type="source">https://github.com/Appadeia/taigo/blob/master/data/screenshots/status.png</image>
+		</screenshot>
+		<screenshot>
+			<caption>Food view of Taigo.</caption>
+			<image type="source">https://github.com/Appadeia/taigo/blob/master/data/screenshots/food.png</image>
+		</screenshot>
+		<screenshot>
+			<caption>Left or Right view of Taigo.</caption>
+			<image type="source">https://github.com/Appadeia/taigo/blob/master/data/screenshots/left-or-right.png</image>
+		</screenshot>
+		<screenshot>
+			<caption>Taigo complaining.</caption>
+			<image type="source">https://github.com/Appadeia/taigo/blob/master/data/screenshots/home.png</image>
+		</screenshot>
+	</screenshots>
 </component>
