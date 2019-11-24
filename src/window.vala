@@ -247,7 +247,7 @@ namespace Taigo {
 				this.taigochi.complaints();
 				return true;
 			}, Priority.DEFAULT);
-			Timeout.add_seconds(Taigo.Globals.fastfoward ? 3 : 300, () => {
+			Timeout.add_seconds(Taigo.Globals.fastfoward ? 1 : 300, () => {
 				this.taigochi.tick();
 				return true;
 			}, Priority.DEFAULT);

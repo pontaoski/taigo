@@ -269,7 +269,25 @@ namespace Taigo {
                 this.missed_calls = 0;
             }
             if (this.care_misses > 5) {
+                if (this.ttype != Taigos.MOLICHI) {
+                    scene.hide();
+                    Timeout.add(1000, () => {
+                        scene.show();
+                        return false;
+                    }, Priority.DEFAULT);
+                }
                 this.ttype = Taigos.MOLICHI;
+                var pixbuf = new Gdk.Pixbuf.from_resource("/me/appadeia/Taigo/images/bgs/graveyard.svg");
+                var img = new Clutter.Image();
+                img.set_data(
+                    pixbuf.get_pixels(),
+                    pixbuf.has_alpha ? Cogl.PixelFormat.RGBA_8888 : Cogl.PixelFormat.RGB_888,
+                    pixbuf.width,
+                    pixbuf.height,
+                    pixbuf.rowstride
+                );
+                bg.content = img;
+                bg.set_size (pixbuf.width, pixbuf.height);
             }
             if (Random.int_range(0, 3) == 2) {
                 this.hunger--;
