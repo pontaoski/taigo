@@ -4,3 +4,11 @@
   <br>
   A virtual pet for your desktop built with GTK+, Vala, and love.
 </p>
+
+<p align="center">
+  <img width="19%" src="https://github.com/Appadeia/taigo/raw/master/data/screenshots/home.png" />  
+  <img width="19%" src="https://github.com/Appadeia/taigo/raw/master/data/screenshots/status.png" />  
+  <img width="19%" src="https://github.com/Appadeia/taigo/raw/master/data/screenshots/food.png" />  
+  <img width="19%" src="https://github.com/Appadeia/taigo/raw/master/data/screenshots/left-or-right.png" />  
+  <img width="19%" src="https://github.com/Appadeia/taigo/raw/master/data/screenshots/complaining.png" />  
+</p>
