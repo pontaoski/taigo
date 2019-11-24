@@ -14,7 +14,7 @@
 	<releases>
 		<release version="0.1" date="2019-11-23" urgency="high">
 			<description>
-				<h1>Taigo Ichi</h1>
+				<p>Taigo Ichi</p>
 				<p>
 					This is the initial version of Taigo. This version includes:
 				</p>
