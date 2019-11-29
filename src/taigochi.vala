@@ -149,7 +149,7 @@ namespace Taigo {
             self_img.y = calc_bottom(scene.get_stage(), self_img) - 30;
         }
         protected void init_bg() {
-            var pixbuf = new Gdk.Pixbuf.from_resource("/me/appadeia/Taigo/images/bgs/home.svg");
+            var pixbuf = new Gdk.Pixbuf.from_resource("/com/github/appadeia/Taigo/images/bgs/home.svg");
             var img = new Clutter.Image();
             img.set_data(
                 pixbuf.get_pixels(),
@@ -277,7 +277,7 @@ namespace Taigo {
                     }, Priority.DEFAULT);
                 }
                 this.ttype = Taigos.MOLICHI;
-                var pixbuf = new Gdk.Pixbuf.from_resource("/me/appadeia/Taigo/images/bgs/graveyard.svg");
+                var pixbuf = new Gdk.Pixbuf.from_resource("/com/github/appadeia/Taigo/images/bgs/graveyard.svg");
                 var img = new Clutter.Image();
                 img.set_data(
                     pixbuf.get_pixels(),
@@ -315,7 +315,7 @@ namespace Taigo {
         }
 
         public string get_image_name(string state) {
-            const string resource_root = "/me/appadeia/Taigo/images/taigochi";
+            const string resource_root = "/com/github/appadeia/Taigo/images/taigochi";
             var str = "%s/%s/%s.svg".printf(resource_root, Utils.names[(Taigos) ttype], state);
             return str;
         }

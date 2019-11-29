@@ -1,6 +1,6 @@
 desktop_file = i18n.merge_file(
-  input: 'me.appadeia.Taigo.desktop.in',
-  output: 'me.appadeia.Taigo.desktop',
+  input: 'com.github.appadeia.Taigo.desktop.in',
+  output: 'com.github.appadeia.Taigo.desktop',
   type: 'desktop',
   po_dir: '../po',
   install: true,
@@ -8,7 +8,7 @@ desktop_file = i18n.merge_file(
 )
 
 install_data(
-    ['me.appadeia.Taigo.svg', 'me.appadeia.Taigo-symbolic.svg'],
+    ['com.github.appadeia.Taigo.svg', 'com.github.appadeia.Taigo-symbolic.svg'],
     install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', 'scalable', 'apps')
 )
 
@@ -20,8 +20,8 @@ if desktop_utils.found()
 endif
 
 appstream_file = i18n.merge_file(
-  input: 'me.appadeia.Taigo.appdata.xml.in',
-  output: 'me.appadeia.Taigo.appdata.xml',
+  input: 'com.github.appadeia.Taigo.appdata.xml.in',
+  output: 'com.github.appadeia.Taigo.appdata.xml',
   po_dir: '../po',
   install: true,
   install_dir: join_paths(get_option('datadir'), 'metainfo')
@@ -34,7 +34,7 @@ if appstream_util.found()
   )
 endif
 
-install_data('me.appadeia.Taigo.gschema.xml',
+install_data('com.github.appadeia.Taigo.gschema.xml',
   install_dir: join_paths(get_option('datadir'), 'glib-2.0/schemas')
 )
 

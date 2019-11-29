@@ -17,13 +17,13 @@
  */
 
 namespace Taigo {
-	[GtkTemplate (ui = "/me/appadeia/Taigo/debugwindow.ui")]
+	[GtkTemplate (ui = "/com/github/appadeia/Taigo/debugwindow.ui")]
 	public class DebugWindow : Gtk.Window {
 		[GtkChild]
 		public Gtk.Box keyval;
 	}
 
-	[GtkTemplate (ui = "/me/appadeia/Taigo/debuglabel.ui")]
+	[GtkTemplate (ui = "/com/github/appadeia/Taigo/debuglabel.ui")]
 	public class DebugLabel : Gtk.Box {
 		[GtkChild]
 		public Gtk.Label key;
@@ -31,7 +31,7 @@ namespace Taigo {
 		public Gtk.Label value;
 	}
 
-	[GtkTemplate (ui = "/me/appadeia/Taigo/game.ui")]
+	[GtkTemplate (ui = "/com/github/appadeia/Taigo/game.ui")]
 	public class Play : Gtk.Popover {
 		public signal void won();
 
@@ -55,7 +55,7 @@ namespace Taigo {
 		}
 	}
 
-	[GtkTemplate (ui = "/me/appadeia/Taigo/food.ui")]
+	[GtkTemplate (ui = "/com/github/appadeia/Taigo/food.ui")]
 	public class Food : Gtk.Popover {
 		public signal void feed_meal ();
 		public signal void feed_treat ();
@@ -73,17 +73,17 @@ namespace Taigo {
 		private void meal() {
 			meal_btn.sensitive = false;
 			Timeout.add((Taigo.Globals.fastfoward ? 60 : 600), () => {
-				meal_img.resource = "/me/appadeia/Taigo/images/animations/meal/eat-1.svg";
+				meal_img.resource = "/com/github/appadeia/Taigo/images/animations/meal/eat-1.svg";
 				Timeout.add((Taigo.Globals.fastfoward ? 60 : 600), () => {
-					meal_img.resource = "/me/appadeia/Taigo/images/animations/meal/eat-2.svg";
+					meal_img.resource = "/com/github/appadeia/Taigo/images/animations/meal/eat-2.svg";
 					Timeout.add((Taigo.Globals.fastfoward ? 60 : 600), () => {
-						meal_img.resource = "/me/appadeia/Taigo/images/animations/meal/eat-3.svg";
+						meal_img.resource = "/com/github/appadeia/Taigo/images/animations/meal/eat-3.svg";
 						Timeout.add((Taigo.Globals.fastfoward ? 60 : 600), () => {
-							meal_img.resource = "/me/appadeia/Taigo/images/animations/meal/eat-4.svg";
+							meal_img.resource = "/com/github/appadeia/Taigo/images/animations/meal/eat-4.svg";
 							Timeout.add((Taigo.Globals.fastfoward ? 60 : 600), () => {
-								meal_img.resource = "/me/appadeia/Taigo/images/animations/meal/blank.svg";
+								meal_img.resource = "/com/github/appadeia/Taigo/images/animations/meal/blank.svg";
 								Timeout.add((Taigo.Globals.fastfoward ? 60 : 600), () => {
-									meal_img.resource = "/me/appadeia/Taigo/images/animations/meal/idle.svg";
+									meal_img.resource = "/com/github/appadeia/Taigo/images/animations/meal/idle.svg";
 									meal_btn.sensitive = true;
 									return false;
 								}, Priority.DEFAULT);
@@ -104,17 +104,17 @@ namespace Taigo {
 		private void treat() {
 			treat_btn.sensitive = false;
 			Timeout.add((Taigo.Globals.fastfoward ? 60 : 600), () => {
-				treat_img.resource = "/me/appadeia/Taigo/images/animations/treat/eat-1.svg";
+				treat_img.resource = "/com/github/appadeia/Taigo/images/animations/treat/eat-1.svg";
 				Timeout.add((Taigo.Globals.fastfoward ? 60 : 600), () => {
-					treat_img.resource = "/me/appadeia/Taigo/images/animations/treat/eat-2.svg";
+					treat_img.resource = "/com/github/appadeia/Taigo/images/animations/treat/eat-2.svg";
 					Timeout.add((Taigo.Globals.fastfoward ? 60 : 600), () => {
-						treat_img.resource = "/me/appadeia/Taigo/images/animations/treat/eat-3.svg";
+						treat_img.resource = "/com/github/appadeia/Taigo/images/animations/treat/eat-3.svg";
 						Timeout.add((Taigo.Globals.fastfoward ? 60 : 600), () => {
-							treat_img.resource = "/me/appadeia/Taigo/images/animations/treat/eat-4.svg";
+							treat_img.resource = "/com/github/appadeia/Taigo/images/animations/treat/eat-4.svg";
 							Timeout.add((Taigo.Globals.fastfoward ? 60 : 600), () => {
-								treat_img.resource = "/me/appadeia/Taigo/images/animations/treat/blank.svg";
+								treat_img.resource = "/com/github/appadeia/Taigo/images/animations/treat/blank.svg";
 								Timeout.add((Taigo.Globals.fastfoward ? 60 : 600), () => {
-									treat_img.resource = "/me/appadeia/Taigo/images/animations/treat/idle.svg";
+									treat_img.resource = "/com/github/appadeia/Taigo/images/animations/treat/idle.svg";
 									treat_btn.sensitive = true;
 									return false;
 								}, Priority.DEFAULT);
@@ -132,7 +132,7 @@ namespace Taigo {
 		}
 	}
 
-	[GtkTemplate (ui = "/me/appadeia/Taigo/status.ui")]
+	[GtkTemplate (ui = "/com/github/appadeia/Taigo/status.ui")]
 	public class Status : Gtk.Popover {
 		[GtkChild]
 		public Gtk.LevelBar food;
@@ -150,7 +150,7 @@ namespace Taigo {
 		public Gtk.Label tg_name;
 	}
 
-	[GtkTemplate (ui = "/me/appadeia/Taigo/window.ui")]
+	[GtkTemplate (ui = "/com/github/appadeia/Taigo/window.ui")]
 	public class Window : Gtk.ApplicationWindow {
 		public Taigochi taigochi;
 
@@ -258,7 +258,7 @@ namespace Taigo {
 		public Window (Gtk.Application app) {
 			Object (application: app);
             var css_provider = new Gtk.CssProvider ();
-            css_provider.load_from_resource ("/me/appadeia/Taigo/css/app.css");
+            css_provider.load_from_resource ("/com/github/appadeia/Taigo/css/app.css");
 
 			var quit_action = new SimpleAction("quit", null);
 			quit_action.activate.connect(() => {
@@ -325,7 +325,7 @@ namespace Taigo {
                 dialog.program_name = "Taigo";
 				dialog.comments = "A virtual pet for your desktop";
 				
-				dialog.logo_icon_name = "me.appadeia.Taigo";
+				dialog.logo_icon_name = "com.github.appadeia.Taigo";
 				dialog.license_type = Gtk.License.GPL_3_0;
 
                 dialog.response.connect ((response_id) => {

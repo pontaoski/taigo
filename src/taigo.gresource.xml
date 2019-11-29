@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
-  <gresource prefix="/me/appadeia/Taigo">
+  <gresource prefix="/com/github/appadeia/Taigo">
     <file>window.ui</file>
     <file>status.ui</file>
     <file>food.ui</file>

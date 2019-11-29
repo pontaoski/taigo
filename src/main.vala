@@ -41,7 +41,7 @@ int main (string[] args) {
 	}, Priority.LOW);
 	Environment.set_variable("GTK_THEME", "Adwaita:dark", true);
 
-	var app = new Gtk.Application ("me.appadeia.Taigo", ApplicationFlags.FLAGS_NONE);
+	var app = new Gtk.Application ("com.github.appadeia.Taigo", ApplicationFlags.FLAGS_NONE);
 	app.add_main_option("debugmode", (char) "d", OptionFlags.NONE, OptionArg.NONE, "Debug mode for Taigo.", null);
 	app.handle_local_options.connect((v) => {
 		print("%s\n", v.contains("debugmode").to_string());
