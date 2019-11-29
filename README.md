@@ -12,3 +12,7 @@
   <img width="19%" src="https://github.com/Appadeia/taigo/raw/master/data/screenshots/left-or-right.png" />  
   <img width="19%" src="https://github.com/Appadeia/taigo/raw/master/data/screenshots/complaining.png" />  
 </p>
+
+## Packaging status
+
+### [Fedora](https://src.fedoraproject.org/rpms/taigo/): `sudo dnf install taigo`
