@@ -12,3 +12,9 @@
   <img width="19%" src="https://github.com/Appadeia/taigo/raw/master/data/screenshots/left-or-right.png" />  
   <img width="19%" src="https://github.com/Appadeia/taigo/raw/master/data/screenshots/complaining.png" />  
 </p>
+
+## Repositories
+
+| <a href="https://src.fedoraproject.org/rpms/taigo"> <img width="15%" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Fedora_logo.svg/1024px-Fedora_logo.svg.png" /> </a>  |
+| ---- |
+| `sudo dnf install taigo` |
