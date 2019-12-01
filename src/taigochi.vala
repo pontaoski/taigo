@@ -66,6 +66,9 @@ namespace Taigo {
         public GtkClutter.Actor complain;
         public Gtk.Label complain_text;
 
+        // State machine
+        public Taigo.StateManager.StateMachine sm;
+
         protected void init_move() {
             int offset = 0;
 			Timeout.add(1000, () => {
@@ -334,6 +337,7 @@ namespace Taigo {
                     break;
             }
             this._init();
+            this._init_statemachine();
             this.init_clutter();
         }
         public void save() {
@@ -403,6 +407,26 @@ namespace Taigo {
                 return false;
             }, Priority.DEFAULT);
             this.init_clutter();
+            this._init_statemachine();
+        }
+        protected void _init_statemachine() {
+            this.sm = new StateManager.StateMachine();
+            
+            var idle_tick = new StateManager.Idle() {
+                interval = Taigo.Globals.fastfoward ? 1000 : 300000,
+                name = "tick"
+            };
+            var normal_state = new StateManager.State() {
+                name = "normal",
+                idles = { idle_tick }
+            };
+
+            this.sm.add_state(normal_state);
+            this.sm.idle.connect((i) => {
+                if (i == "tick") {
+                    this.tick();
+                }
+            });
         }
     }
 }
