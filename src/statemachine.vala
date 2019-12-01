@@ -54,7 +54,12 @@ namespace Taigo.StateManager {
             foreach(var i in next_state.idles) {
                 active_idles.append(GLib.Timeout.add(i.interval, () => { this.idle(i.name); return true; }, GLib.Priority.DEFAULT));
             }
-            this.transition(current_state, name);
+            foreach(var trans in this.statetransitions) {
+                if (trans.from == current_state && trans.to == name) {
+                    this.transition(current_state, name);
+                    break;
+                }
+            }
             this.current_state = name;
 
             return true;
