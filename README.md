@@ -18,3 +18,10 @@
 | <a href="https://src.fedoraproject.org/rpms/taigo"> <img width="15%" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Fedora_logo.svg/1024px-Fedora_logo.svg.png" /> </a>  |
 | ---- |
 | `sudo dnf install taigo` |
+
+
+
+<p align="right">
+    <a href="https://discord.gg/9a9pkkq"> <img src="https://github.com/Appadeia/taigo/raw/master/readme/discord.png" /> </a> 
+    <a href="https://matrix.to/#/!cWJOblpFZbkTRLQSij:matrix.org?via=matrix.org&via=t2bot.io"> <img src="https://github.com/Appadeia/taigo/raw/master/readme/matrix.png" /> </a> 
+</p>
