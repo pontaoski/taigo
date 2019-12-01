@@ -148,6 +148,7 @@ namespace Taigo {
 
 		[GtkChild]
 		public Gtk.Label tg_name;
+
 	}
 
 	[GtkTemplate (ui = "/com/github/appadeia/Taigo/window.ui")]
@@ -164,10 +165,19 @@ namespace Taigo {
 		Gtk.Button play;
 
 		[GtkChild]
+		Gtk.ToggleButton go;
+
+		[GtkChild]
 		Gtk.Image status_icon;
 
 		[GtkChild]
 		Gtk.MenuButton hamberder;
+
+		[GtkChild]
+		Gtk.Stack content_stack;
+
+		[GtkChild]
+		Gtk.Image taigo_sleeping;
 
 		protected Status status;
 		protected Food food;
@@ -216,10 +226,21 @@ namespace Taigo {
 				c = "%dg".printf(this.taigochi.weight);
 				return true;
 			});
+			this.taigochi.notify.connect(() => {
+				status.food.value = taigochi.hunger;
+				status.happy.value = taigochi.happy;	
+				this.content_stack.set_visible_child_name(this.taigochi.sm.current_state);
+			});
 
 			this.status.tg_name.set_text(Utils.names[(Taigos) this.taigochi.ttype]);
 			status.food.value = this.taigochi.hunger;
 			status.happy.value = this.taigochi.happy;
+
+			taigo_sleeping.resource = this.taigochi.get_image_name("zzz");
+			this.taigochi.bind_property("ttype", taigo_sleeping, "resource", BindingFlags.DEFAULT, (a, b, ref c) => {
+				c = this.taigochi.get_image_name("zzz");
+				return true;
+			});
 
 			if (taigochi.gender == Genders.MALE)
 				this.status.gender.set_text("Male");
@@ -296,6 +317,18 @@ namespace Taigo {
 				this.taigochi.game();
 			});
 
+			go.toggled.connect(() => {
+				if (go.active) {
+					this.content_stack.set_visible_child_name("daycare");
+					this.taigochi.sm.change_to_state("daycare");
+				} else {
+					this.content_stack.set_visible_child_name("normal");
+					this.taigochi.sm.change_to_state("normal");
+				}
+			});
+			go.bind_property("active", eat, "sensitive", BindingFlags.INVERT_BOOLEAN);
+			go.bind_property("active", play, "sensitive", BindingFlags.INVERT_BOOLEAN);
+
 			var menu = new Menu();
 			hamberder.image = new Gtk.Image.from_icon_name("open-menu-symbolic", Gtk.IconSize.BUTTON);
 			hamberder.menu_model = menu;
@@ -340,7 +373,8 @@ namespace Taigo {
 			Globals.scene = new GtkClutter.Embed();
 			Globals.scene.show_all();
 			Globals.scene.get_stage().set_size(360, 576);
-			this.add(Globals.scene);
+			this.content_stack.add_named(Globals.scene, "normal");
+			this.content_stack.set_visible_child_name("normal");
 
 			nowy.activate.connect(() => {
 				var dialog = new Gtk.MessageDialog(this, Gtk.DialogFlags.MODAL, Gtk.MessageType.WARNING, Gtk.ButtonsType.YES_NO, "Are you sure you want to delete your Taigochi and make a new one? This cannot be undone.");

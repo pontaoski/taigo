@@ -17,6 +17,11 @@
     <property name="can_focus">False</property>
     <property name="icon_name">gamepad-symbolic</property>
   </object>
+  <object class="GtkImage" id="image4">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="icon_name">emoji-travel-symbolic</property>
+  </object>
   <template class="TaigoWindow" parent="GtkApplicationWindow">
     <property name="can_focus">False</property>
     <property name="resizable">False</property>
@@ -79,7 +84,18 @@
               </packing>
             </child>
             <child>
-              <placeholder/>
+              <object class="GtkToggleButton" id="go">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="image">image4</property>
+                <property name="always_show_image">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">3</property>
+              </packing>
             </child>
             <child>
               <placeholder/>
@@ -106,7 +122,65 @@
       </object>
     </child>
     <child>
-      <placeholder/>
+      <object class="GtkStack" id="content_stack">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="transition_type">over-down-up</property>
+        <child>
+          <object class="GtkOverlay" id="daycare">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <object class="GtkImage">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="resource">/com/github/appadeia/Taigo/images/bgs/daycare.svg</property>
+              </object>
+              <packing>
+                <property name="index">-1</property>
+              </packing>
+            </child>
+            <child type="overlay">
+              <object class="GtkImage">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">end</property>
+                <property name="valign">end</property>
+                <property name="margin_right">20</property>
+                <property name="margin_bottom">80</property>
+                <property name="resource">/com/github/appadeia/Taigo/images/taigochi/Soweliche/blink.svg</property>
+              </object>
+            </child>
+            <child type="overlay">
+              <object class="GtkImage" id="taigo_sleeping">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">center</property>
+                <property name="valign">end</property>
+                <property name="margin_bottom">35</property>
+                <property name="resource">a</property>
+              </object>
+              <packing>
+                <property name="index">2</property>
+              </packing>
+            </child>
+            <child type="overlay">
+              <object class="GtkImage">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="resource">/com/github/appadeia/Taigo/images/fgs/darkened.svg</property>
+              </object>
+              <packing>
+                <property name="index">6</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="name">daycare</property>
+            <property name="title" translatable="yes">page0</property>
+          </packing>
+        </child>
+      </object>
     </child>
   </template>
   <object class="GtkPopover" id="complain">

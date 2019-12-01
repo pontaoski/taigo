@@ -210,10 +210,6 @@ namespace Taigo {
                 this.happy = 4;
             if (this.weight < 0)
                 this.weight = 0;
-            
-            this.notify_property("weight");
-            this.notify_property("happy");
-            this.notify_property("hunger");
         }
 
         public void feed() {
@@ -221,7 +217,6 @@ namespace Taigo {
                 return;
             if (this.hunger == 4) {
                 this.weight++;
-                this.notify_property("weight");
             }
             hunger ++;
             verify();
@@ -231,7 +226,6 @@ namespace Taigo {
                 return;
             happy = happy + Random.double_range(0.5, 1.5);
             this.weight--;
-            this.notify_property("weight");
             verify();
         }
         public void treat() {
@@ -241,7 +235,6 @@ namespace Taigo {
             game();
 
             this.weight += 3;
-            this.notify_property("weight");
             verify();
         }
         public string complaints() {
@@ -272,13 +265,6 @@ namespace Taigo {
                 this.missed_calls = 0;
             }
             if (this.care_misses > 5) {
-                if (this.ttype != Taigos.MOLICHI) {
-                    scene.hide();
-                    Timeout.add(1000, () => {
-                        scene.show();
-                        return false;
-                    }, Priority.DEFAULT);
-                }
                 this.ttype = Taigos.MOLICHI;
                 var pixbuf = new Gdk.Pixbuf.from_resource("/com/github/appadeia/Taigo/images/bgs/graveyard.svg");
                 var img = new Clutter.Image();
@@ -359,6 +345,9 @@ namespace Taigo {
             }
         }
         public Taigochi() {
+            Timeout.add(50, () => {
+                return true;
+            }, Priority.DEFAULT);
             var path = Path.build_path("/", Environment.get_user_data_dir(), "taigo", "saves", "taigo.tk");
             try {
                 string content;
@@ -413,15 +402,29 @@ namespace Taigo {
             this.sm = new StateManager.StateMachine();
             
             var idle_tick = new StateManager.Idle() {
-                interval = Taigo.Globals.fastfoward ? 1000 : 300000,
+                interval = Taigo.Globals.fastfoward ? 5000 : 300000,
                 name = "tick"
             };
             var normal_state = new StateManager.State() {
                 name = "normal",
                 idles = { idle_tick }
             };
+            var daycare_state = new StateManager.State() {
+                name = "daycare"
+            };
+            var norm_to_day = new StateManager.StateTransition() {
+                from = "normal",
+                to = "daycare"
+            };
+            var day_to_norm = new StateManager.StateTransition() {
+                from = "daycare",
+                to = "normal"
+            };
 
             this.sm.add_state(normal_state);
+            this.sm.add_state(daycare_state);
+            this.sm.add_state_transition(norm_to_day);
+            this.sm.add_state_transition(day_to_norm);
             this.sm.idle.connect((i) => {
                 if (i == "tick") {
                     this.tick();
