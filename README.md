@@ -15,9 +15,9 @@
 
 ## Repositories
 
-| <a href="https://src.fedoraproject.org/rpms/taigo"> <img width="15%" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Fedora_logo.svg/1024px-Fedora_logo.svg.png" /> </a>  |
-| ---- |
-| `sudo dnf install taigo` |
+| <a href="https://src.fedoraproject.org/rpms/taigo"> <img height="80px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Fedora_logo.svg/1024px-Fedora_logo.svg.png" /> </a>  | <a href='https://flathub.org/apps/details/com.github.appadeia.Taigo'><img height='80px' alt='Download on Flathub' src='https://flathub.org/assets/badges/flathub-badge-en.png'/></a> |
+| ---- | ---- |
+| `sudo dnf install taigo` | `flatpak install flathub com.github.appadeia.Taigo` |
 
 
 
