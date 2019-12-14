@@ -49,7 +49,7 @@ namespace Taigo.StateManager {
 
             foreach(var i in this.active_idles) {
                 Source.remove(i);
-                this.active_idles.remove(i);
+            }
             this.active_idles = new List<uint>();
 
             foreach(var i in next_state.idles) {

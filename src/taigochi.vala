@@ -210,6 +210,8 @@ namespace Taigo {
                 this.happy = 4;
             if (this.weight < 0)
                 this.weight = 0;
+            if (this.care_misses < 0)
+                this.care_misses = 0;
         }
 
         public void feed() {
@@ -239,9 +241,9 @@ namespace Taigo {
         }
         public string complaints() {
             string a = "";
-            if (hunger <= 2)
+            if (hunger <= 1)
                 a += "Feed me!\n";
-            if (happy <= 2)
+            if (happy <= 1)
                 a += "Play with me!\n";
             if (weight >= 4)
                 a += "I'm fat!\n";
@@ -256,33 +258,51 @@ namespace Taigo {
             return a.strip();
         }
 
-        public void tick() {
-            if (complaints() != "") {
-                this.missed_calls++;
+        public void hunger_tick() {
+            if (Random.int_range(0, 2) == 1) {
+                this.hunger = this.hunger - Random.double_range(0.1, 0.5);
             }
-            if (this.missed_calls > 3) {
+            verify();
+        }
+        public void happy_tick() {
+            if (Random.int_range(0, 2) == 1) {
+                this.happy = this.happy - Random.double_range(0.1, 0.5);
+            }
+            verify();
+        }
+        public void weight_tick() {
+            if (Random.int_range(0, 2) == 1) {
+                weight--;
+            }
+            verify();
+        }
+        public void care_tick() {
+            if (this.missed_calls >= 1 && complaints() != "") {
                 this.care_misses++;
                 this.missed_calls = 0;
-            }
-            if (this.care_misses > 5) {
-                this.ttype = Taigos.MOLICHI;
-                var pixbuf = new Gdk.Pixbuf.from_resource("/com/github/appadeia/Taigo/images/bgs/graveyard.svg");
-                var img = new Clutter.Image();
-                img.set_data(
-                    pixbuf.get_pixels(),
-                    pixbuf.has_alpha ? Cogl.PixelFormat.RGBA_8888 : Cogl.PixelFormat.RGB_888,
-                    pixbuf.width,
-                    pixbuf.height,
-                    pixbuf.rowstride
-                );
-                bg.content = img;
-                bg.set_size (pixbuf.width, pixbuf.height);
-            }
-            if (Random.int_range(0, 3) == 2) {
-                this.hunger--;
-            }
-            if (Random.int_range(0, 2) == 1) {
-                this.happy = this.happy - Random.double_range(0.1, 1);
+                if (this.care_misses > 5) {
+                    this.ttype = Taigos.MOLICHI;
+                    var pixbuf = new Gdk.Pixbuf.from_resource("/com/github/appadeia/Taigo/images/bgs/graveyard.svg");
+                    var img = new Clutter.Image();
+                    img.set_data(
+                        pixbuf.get_pixels(),
+                        pixbuf.has_alpha ? Cogl.PixelFormat.RGBA_8888 : Cogl.PixelFormat.RGB_888,
+                        pixbuf.width,
+                        pixbuf.height,
+                        pixbuf.rowstride
+                    );
+                    bg.content = img;
+                    bg.set_size (pixbuf.width, pixbuf.height);
+                }
+            } else if (this.missed_calls <= -1 && complaints() == "") {
+                this.missed_calls = 0;
+                this.care_misses--;
+            } else {
+                if (complaints() != "") {
+                    this.missed_calls = 1;
+                } else {
+                    this.missed_calls = -1;
+                }
             }
             verify();
         }
@@ -291,11 +311,11 @@ namespace Taigo {
             if (this.ttype == Taigos.MOLICHI)
                 return Mood.BAD;
             var mood = Mood.OKAY;
-            if(hunger > 3 && happy > 3.5) {
+            if(hunger >= 3 && happy >= 3.5) {
                 mood = Mood.GREAT;
-            } else if (hunger > 3 && happy > 3) {
+            } else if (hunger >= 2 && happy >= 2) {
                 mood = Mood.GOOD;
-            } else if (hunger > 2 && happy > 2) {
+            } else if (hunger >= 1 && happy >= 1) {
                 mood = Mood.OKAY;
             } else {
                 mood = Mood.BAD;
@@ -401,13 +421,25 @@ namespace Taigo {
         protected void _init_statemachine() {
             this.sm = new StateManager.StateMachine();
             
-            var idle_tick = new StateManager.Idle() {
-                interval = Taigo.Globals.fastfoward ? 5000 : 300000,
-                name = "tick"
+            var hunger_tick = new StateManager.Idle() {
+                interval = (120 * (Taigo.Globals.fastfoward ? 50 : 1000)),
+                name = "hunger"
+            };
+            var happy_tick = new StateManager.Idle() {
+                interval = (180 * (Taigo.Globals.fastfoward ? 50 : 1000)),
+                name = "happy"
+            };
+            var weight_tick = new StateManager.Idle() {
+                interval = (1800 * (Taigo.Globals.fastfoward ? 50 : 1000)),
+                name = "weight"
+            };
+            var care_tick = new StateManager.Idle() {
+                interval = (300 * (Taigo.Globals.fastfoward ? 50 : 1000)),
+                name = "care"
             };
             var normal_state = new StateManager.State() {
                 name = "normal",
-                idles = { idle_tick }
+                idles = { hunger_tick, happy_tick, weight_tick, care_tick }
             };
             var daycare_state = new StateManager.State() {
                 name = "daycare"
@@ -426,8 +458,17 @@ namespace Taigo {
             this.sm.add_state_transition(norm_to_day);
             this.sm.add_state_transition(day_to_norm);
             this.sm.idle.connect((i) => {
-                if (i == "tick") {
-                    this.tick();
+                if (Taigo.Globals.fastfoward) {
+                    print("Current State\t%s\nCurrent Idle\t%s\n",this.sm.current_state, i);
+                }
+                if (i == "hunger") {
+                    this.hunger_tick();
+                } else if (i == "happy") {
+                    this.happy_tick();
+                } else if (i == "weight") {
+                    this.weight_tick();
+                } else if (i == "care") {
+                    this.care_tick();
                 }
             });
         }
