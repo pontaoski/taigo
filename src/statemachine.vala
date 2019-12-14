@@ -52,7 +52,6 @@ namespace Taigo.StateManager {
                 this.active_idles.remove(i);
             this.active_idles = new List<uint>();
 
-            }
             foreach(var i in next_state.idles) {
                 active_idles.append(GLib.Timeout.add(i.interval, () => { this.idle(i.name); return true; }, GLib.Priority.DEFAULT));
             }
