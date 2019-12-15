@@ -22,18 +22,6 @@ int main (string[] args) {
 
 	Clutter.init(ref args);
 
-	var env = Environment.get_variable("G_RESOURCE_OVERLAYS");
-	if (env != null) {
-		print("Sorry, this app does not allow you to overlay resources.\n");
-		return 1;
-	}
-	env = Environment.get_variable("GTK_DEBUG");
-	if (env.down() == "interactive") {
-		print("Sorry, this app does not allow you to use the GTK inspector.\n");
-		return 1;
-	}
-	Timeout.add(1000, () => {
-		if (gdb_check() != 0) {
 			print("Sorry, this app cannot be debugged.\n");
 			seg();
 		}
