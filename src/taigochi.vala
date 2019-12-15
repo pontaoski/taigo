@@ -66,9 +66,6 @@ namespace Taigo {
         public GtkClutter.Actor complain;
         public Gtk.Label complain_text;
 
-        // State machine
-        public Taigo.StateManager.StateMachine sm;
-
         protected void init_move() {
             int offset = 0;
 			Timeout.add(1000, () => {
@@ -419,22 +416,22 @@ namespace Taigo {
             this._init_statemachine();
         }
         protected void _init_statemachine() {
-            this.sm = new StateManager.StateMachine();
+            statemachine = new StateManager.StateMachine();
             
             var hunger_tick = new StateManager.Idle() {
-                interval = (120 * (Taigo.Globals.fastfoward ? 50 : 1000)),
+                interval = (120 * (fastfoward ? 50 : 1000)),
                 name = "hunger"
             };
             var happy_tick = new StateManager.Idle() {
-                interval = (180 * (Taigo.Globals.fastfoward ? 50 : 1000)),
+                interval = (180 * (fastfoward ? 50 : 1000)),
                 name = "happy"
             };
             var weight_tick = new StateManager.Idle() {
-                interval = (1800 * (Taigo.Globals.fastfoward ? 50 : 1000)),
+                interval = (1800 * (fastfoward ? 50 : 1000)),
                 name = "weight"
             };
             var care_tick = new StateManager.Idle() {
-                interval = (300 * (Taigo.Globals.fastfoward ? 50 : 1000)),
+                interval = (300 * (fastfoward ? 50 : 1000)),
                 name = "care"
             };
             var normal_state = new StateManager.State() {
@@ -444,6 +441,9 @@ namespace Taigo {
             var daycare_state = new StateManager.State() {
                 name = "daycare"
             };
+            var away_state = new StateManager.State() {
+                name = "away"
+            };
             var norm_to_day = new StateManager.StateTransition() {
                 from = "normal",
                 to = "daycare"
@@ -452,14 +452,28 @@ namespace Taigo {
                 from = "daycare",
                 to = "normal"
             };
+            var norm_to_away = new StateManager.StateTransition() {
+                from = "normal",
+                to = "daycare"
+            };
+            var away_to_norm = new StateManager.StateTransition() {
+                from = "daycare",
+                to = "normal"
+            };
 
-            this.sm.add_state(normal_state);
-            this.sm.add_state(daycare_state);
-            this.sm.add_state_transition(norm_to_day);
-            this.sm.add_state_transition(day_to_norm);
-            this.sm.idle.connect((i) => {
-                if (Taigo.Globals.fastfoward) {
-                    print("Current State\t%s\nCurrent Idle\t%s\n",this.sm.current_state, i);
+            statemachine.add_state(normal_state);
+            statemachine.add_state(daycare_state);
+            statemachine.add_state(away_state);
+
+            statemachine.add_state_transition(norm_to_day);
+            statemachine.add_state_transition(day_to_norm);
+
+            statemachine.add_state_transition(norm_to_away);
+            statemachine.add_state_transition(away_to_norm);
+
+            statemachine.idle.connect((i) => {
+                if (fastfoward) {
+                    print("Current State\t%s\nCurrent Idle\t%s\n",statemachine.current_state, i);
                 }
                 if (i == "hunger") {
                     this.hunger_tick();

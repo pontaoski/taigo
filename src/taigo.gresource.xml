@@ -7,6 +7,7 @@
     <file>debuglabel.ui</file>
     <file>debugwindow.ui</file>
     <file>game.ui</file>
+    <file>rps.ui</file>
 
     <file>css/app.css</file>
 
@@ -20,6 +21,7 @@
     <file>images/bgs/home.svg</file>
     <file>images/bgs/graveyard.svg</file>
     <file>images/bgs/daycare.svg</file>
+    <file>images/bgs/away.svg</file>
 
     <file>images/fgs/darkened.svg</file>
 
@@ -53,5 +55,9 @@
     <file>images/animations/treat/eat-4.svg</file>
     <file>images/animations/meal/blank.svg</file>
     <file>images/animations/treat/blank.svg</file>
+
+    <file>images/animations/rps/paper.svg</file>
+    <file>images/animations/rps/rock.svg</file>
+    <file>images/animations/rps/scissor.svg</file>
   </gresource>
 </gresources>

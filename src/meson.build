@@ -5,6 +5,7 @@ taigo_sources = [
   'global.vala',
   'gdb.c',
   'statemachine.vala',
+  'rps.vala',
 ]
 
 taigo_deps = [

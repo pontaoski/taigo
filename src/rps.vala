@@ -1,0 +1,106 @@
+using Taigo.Globals;
+
+namespace Taigo { 
+    [GtkTemplate (ui = "/com/github/appadeia/Taigo/rps.ui")]
+	public class Rps : Gtk.Window {
+        [GtkChild]
+        Gtk.Image rps_img;
+        [GtkChild]
+        Gtk.Image taigochi_img;
+
+        public bool pause;
+        public enum Choices { ROCK, PAPER, SCISSOR }
+
+        construct {
+            taigochi_img.resource = taigochi.get_image_name("normal");
+            int rand = Random.int_range(0, 3);
+            switch (rand) {
+                case 0:
+                    rps_img.resource = "/com/github/appadeia/Taigo/images/animations/rps/paper.svg";
+                    break;
+                case 1:
+                    rps_img.resource = "/com/github/appadeia/Taigo/images/animations/rps/scissor.svg";
+                    break;
+                case 2:
+                    rps_img.resource = "/com/github/appadeia/Taigo/images/animations/rps/rock.svg";
+                    break;
+            }
+            GLib.Timeout.add(500, () => {
+                if (pause)
+                    return true;
+                int randy = Random.int_range(0, 3);
+                switch (randy) {
+                    case 0:
+                        rps_img.resource = "/com/github/appadeia/Taigo/images/animations/rps/paper.svg";
+                        break;
+                    case 1:
+                        rps_img.resource = "/com/github/appadeia/Taigo/images/animations/rps/scissor.svg";
+                        break;
+                    case 2:
+                        rps_img.resource = "/com/github/appadeia/Taigo/images/animations/rps/rock.svg";
+                        break;
+                }
+                return true;
+            }, GLib.Priority.DEFAULT);
+        }
+        ~Rps() {
+            
+        }
+        [GtkCallback]
+        private void rps_end() {
+            statemachine.change_to_state("normal");
+        }
+        private string counter(Choices choice) {
+            switch(choice) {
+                case Choices.ROCK: return "/com/github/appadeia/Taigo/images/animations/rps/paper.svg";
+                case Choices.PAPER: return "/com/github/appadeia/Taigo/images/animations/rps/scissor.svg";
+                case Choices.SCISSOR: return "/com/github/appadeia/Taigo/images/animations/rps/rock.svg";
+                default: return "";
+            }
+        }
+        private string strong(Choices choice) {
+            switch(choice) {
+                case Choices.ROCK: return "/com/github/appadeia/Taigo/images/animations/rps/scissor.svg";
+                case Choices.PAPER: return "/com/github/appadeia/Taigo/images/animations/rps/rock.svg";
+                case Choices.SCISSOR: return "/com/github/appadeia/Taigo/images/animations/rps/paper.svg";
+                default: return "";
+            }
+        }
+        private string same(Choices choice) {
+            switch(choice) {
+                case Choices.ROCK: return "/com/github/appadeia/Taigo/images/animations/rps/rock.svg";
+                case Choices.PAPER: return "/com/github/appadeia/Taigo/images/animations/rps/paper.svg";
+                case Choices.SCISSOR: return "/com/github/appadeia/Taigo/images/animations/rps/scissor.svg";
+                default: return "";
+            }
+        }
+        private void game(Choices choice) {
+            if(pause)
+                return;
+            int randy = Random.int_range(0, 3);
+            switch (randy) {
+                case 0:
+                    rps_img.resource = strong(choice);
+                    taigochi.game();
+                    break;
+                case 1:
+                    rps_img.resource = counter(choice);
+                    break;
+                case 2:
+                    rps_img.resource = same(choice);
+                    break;
+            }
+            pause = true;
+            GLib.Timeout.add(2000, () => {
+                pause = false;
+                return false;
+            }, GLib.Priority.DEFAULT);
+        }
+        [GtkCallback]
+        private void scissors() { game(Choices.SCISSOR); }
+        [GtkCallback]
+        private void paper() { game(Choices.PAPER); }
+        [GtkCallback]
+        private void rock() { game(Choices.ROCK); }
+	}
+}

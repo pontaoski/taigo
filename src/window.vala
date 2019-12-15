@@ -16,6 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+using Taigo.Globals;
+
 namespace Taigo {
 	[GtkTemplate (ui = "/com/github/appadeia/Taigo/debugwindow.ui")]
 	public class DebugWindow : Gtk.Window {
@@ -33,25 +35,15 @@ namespace Taigo {
 
 	[GtkTemplate (ui = "/com/github/appadeia/Taigo/game.ui")]
 	public class Play : Gtk.Popover {
-		public signal void won();
-
-		[GtkChild]
-		public Gtk.Image flippy;
-
 		[GtkCallback]
-		private void gamey() {
-			if(Random.int_range(0, 2) == 1) {
-				won();
+		private void rps() {
+			print("taigochi null: %s\n", (taigochi == null).to_string());
+			var changed = statemachine.change_to_state("away");
+			if (changed) {
+				var game = new Taigo.Rps();
+				game.set_transient_for(global_win);
+				game.present();
 			}
-		}
-
-		public Play() {
-			Timeout.add(500, () => {
-				Gdk.Pixbuf pix = flippy.get_pixbuf();
-				Gdk.Pixbuf flip = pix.flip(true);
-				flippy.set_from_pixbuf(flip);
-				return true;
-			}, Priority.DEFAULT);
 		}
 	}
 
@@ -72,17 +64,17 @@ namespace Taigo {
 		[GtkCallback]
 		private void meal() {
 			meal_btn.sensitive = false;
-			Timeout.add((Taigo.Globals.fastfoward ? 60 : 600), () => {
+			Timeout.add((fastfoward ? 60 : 600), () => {
 				meal_img.resource = "/com/github/appadeia/Taigo/images/animations/meal/eat-1.svg";
-				Timeout.add((Taigo.Globals.fastfoward ? 60 : 600), () => {
+				Timeout.add((fastfoward ? 60 : 600), () => {
 					meal_img.resource = "/com/github/appadeia/Taigo/images/animations/meal/eat-2.svg";
-					Timeout.add((Taigo.Globals.fastfoward ? 60 : 600), () => {
+					Timeout.add((fastfoward ? 60 : 600), () => {
 						meal_img.resource = "/com/github/appadeia/Taigo/images/animations/meal/eat-3.svg";
-						Timeout.add((Taigo.Globals.fastfoward ? 60 : 600), () => {
+						Timeout.add((fastfoward ? 60 : 600), () => {
 							meal_img.resource = "/com/github/appadeia/Taigo/images/animations/meal/eat-4.svg";
-							Timeout.add((Taigo.Globals.fastfoward ? 60 : 600), () => {
+							Timeout.add((fastfoward ? 60 : 600), () => {
 								meal_img.resource = "/com/github/appadeia/Taigo/images/animations/meal/blank.svg";
-								Timeout.add((Taigo.Globals.fastfoward ? 60 : 600), () => {
+								Timeout.add((fastfoward ? 60 : 600), () => {
 									meal_img.resource = "/com/github/appadeia/Taigo/images/animations/meal/idle.svg";
 									meal_btn.sensitive = true;
 									return false;
@@ -103,17 +95,17 @@ namespace Taigo {
 		[GtkCallback]
 		private void treat() {
 			treat_btn.sensitive = false;
-			Timeout.add((Taigo.Globals.fastfoward ? 60 : 600), () => {
+			Timeout.add((fastfoward ? 60 : 600), () => {
 				treat_img.resource = "/com/github/appadeia/Taigo/images/animations/treat/eat-1.svg";
-				Timeout.add((Taigo.Globals.fastfoward ? 60 : 600), () => {
+				Timeout.add((fastfoward ? 60 : 600), () => {
 					treat_img.resource = "/com/github/appadeia/Taigo/images/animations/treat/eat-2.svg";
-					Timeout.add((Taigo.Globals.fastfoward ? 60 : 600), () => {
+					Timeout.add((fastfoward ? 60 : 600), () => {
 						treat_img.resource = "/com/github/appadeia/Taigo/images/animations/treat/eat-3.svg";
-						Timeout.add((Taigo.Globals.fastfoward ? 60 : 600), () => {
+						Timeout.add((fastfoward ? 60 : 600), () => {
 							treat_img.resource = "/com/github/appadeia/Taigo/images/animations/treat/eat-4.svg";
-							Timeout.add((Taigo.Globals.fastfoward ? 60 : 600), () => {
+							Timeout.add((fastfoward ? 60 : 600), () => {
 								treat_img.resource = "/com/github/appadeia/Taigo/images/animations/treat/blank.svg";
-								Timeout.add((Taigo.Globals.fastfoward ? 60 : 600), () => {
+								Timeout.add((fastfoward ? 60 : 600), () => {
 									treat_img.resource = "/com/github/appadeia/Taigo/images/animations/treat/idle.svg";
 									treat_btn.sensitive = true;
 									return false;
@@ -153,8 +145,6 @@ namespace Taigo {
 
 	[GtkTemplate (ui = "/com/github/appadeia/Taigo/window.ui")]
 	public class Window : Gtk.ApplicationWindow {
-		public Taigochi taigochi;
-
 		[GtkChild]
 		Gtk.Button heart;
 
@@ -186,12 +176,12 @@ namespace Taigo {
 
 		//  [GtkCallback]
 		//  private void tick() {
-		//  	this.taigochi.tick();
+		//  	taigochi.tick();
 		//  }
 		
 		[GtkCallback]
 		protected void save() {
-			this.taigochi.save();
+			taigochi.save();
 		}
 
 		protected void debug_win() {
@@ -200,7 +190,7 @@ namespace Taigo {
 			foreach(string s in property_list) {
 				var kv = new Taigo.DebugLabel();
 				kv.key.label = s;
-				this.taigochi.bind_property(s, kv.value, "label", BindingFlags.DEFAULT, (a,b, ref c) => {
+				taigochi.bind_property(s, kv.value, "label", BindingFlags.DEFAULT, (a,b, ref c) => {
 					if (b.holds(Type.DOUBLE))
 						c = "%f".printf(b.get_double());
 					if (b.holds(Type.INT))
@@ -214,31 +204,33 @@ namespace Taigo {
 
 		protected void init_taikochi(bool force_new = false) {
 			if (force_new) {
-				this.taigochi = new Taigochi.from_baby();
+				taigochi = new Taigochi.from_baby();
 			} else {
-				this.taigochi = new Taigochi();
+				taigochi = new Taigochi();
 			}
-			this.game.flippy.resource = this.taigochi.get_image_name("normal");
 
-			this.taigochi.bind_property("hunger", status.food, "value", BindingFlags.DEFAULT);
-			this.taigochi.bind_property("happy", status.happy, "value", BindingFlags.DEFAULT);
-			this.taigochi.bind_property("weight", status.weight, "label", BindingFlags.DEFAULT, (a,b, ref c) => {
-				c = "%dg".printf(this.taigochi.weight);
+			taigochi.bind_property("hunger", status.food, "value", BindingFlags.DEFAULT);
+			taigochi.bind_property("happy", status.happy, "value", BindingFlags.DEFAULT);
+			taigochi.bind_property("weight", status.weight, "label", BindingFlags.DEFAULT, (a,b, ref c) => {
+				c = "%dg".printf(taigochi.weight);
 				return true;
 			});
-			this.taigochi.notify.connect(() => {
+			taigochi.notify.connect(() => {
 				status.food.value = taigochi.hunger;
 				status.happy.value = taigochi.happy;	
-				this.content_stack.set_visible_child_name(this.taigochi.sm.current_state);
+			});
+			statemachine.transitioned.connect(() => {
+				print("Changing visible child name to: %s\n", statemachine.current_state);
+				this.content_stack.set_visible_child_name(statemachine.current_state);
 			});
 
-			this.status.tg_name.set_text(Utils.names[(Taigos) this.taigochi.ttype]);
-			status.food.value = this.taigochi.hunger;
-			status.happy.value = this.taigochi.happy;
+			this.status.tg_name.set_text(Utils.names[(Taigos) taigochi.ttype]);
+			status.food.value = taigochi.hunger;
+			status.happy.value = taigochi.happy;
 
-			taigo_sleeping.resource = this.taigochi.get_image_name("zzz");
-			this.taigochi.bind_property("ttype", taigo_sleeping, "resource", BindingFlags.DEFAULT, (a, b, ref c) => {
-				c = this.taigochi.get_image_name("zzz");
+			taigo_sleeping.resource = taigochi.get_image_name("zzz");
+			taigochi.bind_property("ttype", taigo_sleeping, "resource", BindingFlags.DEFAULT, (a, b, ref c) => {
+				c = taigochi.get_image_name("zzz");
 				return true;
 			});
 
@@ -250,7 +242,7 @@ namespace Taigo {
 				this.status.gender.set_text("Enby");
 
 			Timeout.add_seconds(3, () => {
-				var mood = this.taigochi.calc_mood();
+				var mood = taigochi.calc_mood();
 				switch(mood) {
 					case Mood.GREAT:
 						status_icon.icon_name = "face-smile-big-symbolic";
@@ -265,10 +257,10 @@ namespace Taigo {
 						status_icon.icon_name = "face-sad-symbolic";
 						break;
 				}
-				this.taigochi.complaints();
+				taigochi.complaints();
 				return true;
 			}, Priority.DEFAULT);
-			if(Taigo.Globals.fastfoward)
+			if(fastfoward)
 				this.debug_win();
 		}
 
@@ -307,27 +299,25 @@ namespace Taigo {
 			});
 
 			food.feed_meal.connect(() => {
-				this.taigochi.feed();
+				taigochi.feed();
 			});
 			food.feed_treat.connect(() => {
-				this.taigochi.treat();
-			});
-
-			game.won.connect(() => {
-				this.taigochi.game();
+				taigochi.treat();
 			});
 
 			go.toggled.connect(() => {
 				if (go.active) {
 					this.content_stack.set_visible_child_name("daycare");
-					this.taigochi.sm.change_to_state("daycare");
+					statemachine.change_to_state("daycare");
 				} else {
 					this.content_stack.set_visible_child_name("normal");
-					this.taigochi.sm.change_to_state("normal");
+					statemachine.change_to_state("normal");
 				}
 			});
 			go.bind_property("active", eat, "sensitive", BindingFlags.INVERT_BOOLEAN);
 			go.bind_property("active", play, "sensitive", BindingFlags.INVERT_BOOLEAN);
+
+			global_win = this;
 
 			var menu = new Menu();
 			hamberder.image = new Gtk.Image.from_icon_name("open-menu-symbolic", Gtk.IconSize.BUTTON);

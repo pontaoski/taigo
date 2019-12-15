@@ -23,6 +23,7 @@ namespace Taigo.StateManager {
 
         public signal void idle(string idle_name);
         public signal void transition(string from_name, string to_name);
+        public signal void transitioned();
 
         public void add_state(State state) {
             this.states.append(state);
@@ -37,6 +38,7 @@ namespace Taigo.StateManager {
             this.statetransitions.append(transition);
         }
         public bool change_to_state(string name) {
+            print("Trying to change to state %s\n", name);
             State? next_state = null;
             foreach(var state in this.states) {
                 if (state.name == name) {
@@ -62,6 +64,7 @@ namespace Taigo.StateManager {
                 }
             }
             this.current_state = name;
+            this.transitioned();
 
             return true;
         }

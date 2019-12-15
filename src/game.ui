@@ -2,11 +2,6 @@
 <!-- Generated with glade 3.22.1 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
-  <object class="GtkImage" id="image1">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="icon_name">arrow1-left-symbolic</property>
-  </object>
   <template class="TaigoPlay" parent="GtkPopover">
     <property name="can_focus">False</property>
     <child>
@@ -20,10 +15,10 @@
         <property name="orientation">vertical</property>
         <property name="spacing">30</property>
         <child>
-          <object class="GtkLabel" id="tg_name">
+          <object class="GtkLabel">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">Left or Right?</property>
+            <property name="label" translatable="yes">Games</property>
             <style>
               <class name="title-3"/>
             </style>
@@ -39,47 +34,21 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="halign">center</property>
+            <property name="orientation">vertical</property>
             <property name="spacing">20</property>
             <child>
               <object class="GtkButton">
+                <property name="label" translatable="yes">Rock Paper Scissors</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="valign">center</property>
-                <property name="image">image1</property>
-                <signal name="clicked" handler="gamey" swapped="no"/>
+                <signal name="clicked" handler="rps" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
                 <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkImage" id="flippy">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="stock">gtk-missing-image</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="valign">center</property>
-                <property name="image">image2</property>
-                <signal name="clicked" handler="gamey" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">2</property>
               </packing>
             </child>
           </object>
@@ -92,9 +61,4 @@
       </object>
     </child>
   </template>
-  <object class="GtkImage" id="image2">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="icon_name">arrow1-right-symbolic</property>
-  </object>
 </interface>

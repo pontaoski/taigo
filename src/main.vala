@@ -22,11 +22,6 @@ int main (string[] args) {
 
 	Clutter.init(ref args);
 
-			print("Sorry, this app cannot be debugged.\n");
-			seg();
-		}
-		return true;
-	}, Priority.LOW);
 	Environment.set_variable("GTK_THEME", "Adwaita:dark", true);
 
 	var app = new Gtk.Application ("com.github.appadeia.Taigo", ApplicationFlags.FLAGS_NONE);
