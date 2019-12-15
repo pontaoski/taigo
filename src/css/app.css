@@ -43,3 +43,7 @@
     font-weight: 400;
     font-size: 9pt;
 }
+
+window.main {
+    background-color: black;
+}

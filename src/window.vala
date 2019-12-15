@@ -365,17 +365,27 @@ namespace Taigo {
 			Globals.scene.get_stage().set_size(360, 576);
 			this.content_stack.add_named(Globals.scene, "normal");
 			this.content_stack.set_visible_child_name("normal");
+			bool ani = false;
+			this.content_stack.notify.connect((s, p) => {
+				if (p.name == "visible-child-name") {
+					if (ani)
+						return;
+					ani = true;
+					content_stack.hide();
+					Timeout.add(750, () => {
+						content_stack.show();
+						ani = false;
+						return false;
+					}, Priority.DEFAULT);
+				}
+			});
 
 			nowy.activate.connect(() => {
 				var dialog = new Gtk.MessageDialog(this, Gtk.DialogFlags.MODAL, Gtk.MessageType.WARNING, Gtk.ButtonsType.YES_NO, "Are you sure you want to delete your Taigochi and make a new one? This cannot be undone.");
 				dialog.response.connect((a) => {
 					if (a == Gtk.ResponseType.YES) {
 						this.init_taikochi(true);
-						Globals.scene.hide();
-						Timeout.add(1000, () => {
-							Globals.scene.show();
-							return false;
-						}, Priority.DEFAULT);
+						this.content_stack.set_visible_child_name("normal");
 					}
 					dialog.hide_on_delete();
 				});
