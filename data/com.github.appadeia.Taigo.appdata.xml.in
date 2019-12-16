@@ -13,6 +13,31 @@
 		</p>
 	</description>
 	<releases>
+		<release version="0.3" date="2019-12-15" urgency="high">
+			<description>
+				<p>Taigo San</p>
+				<p>
+					The third version of Taigo brings:
+				</p>
+				<ul>
+					<li>Daycare</li>
+					<li>Animation improvements</li>
+					<li>Left or Right replaced with Rock Paper Scissors</li>
+				</ul>
+			</description>
+		</release>
+		<release version="0.2" date="2019-11-29" urgency="high">
+			<description>
+				<p>Taigo Ni</p>
+				<p>
+					The second version of Taigo brings:
+				</p>
+				<ul>
+					<li>Death</li>
+					<li>Switch from GTK+ to Clutter for drawing</li>
+				</ul>
+			</description>
+		</release>
 		<release version="0.1" date="2019-11-23" urgency="high">
 			<description>
 				<p>Taigo Ichi</p>
@@ -41,8 +66,8 @@
 			<image type="source">https://raw.githubusercontent.com/Appadeia/taigo/master/data/screenshots/food.png</image>
 		</screenshot>
 		<screenshot>
-			<caption>Left or Right view of Taigo</caption>
-			<image type="source">https://raw.githubusercontent.com/Appadeia/taigo/master/data/screenshots/left-or-right.png</image>
+			<caption>A Rock Paper Scissors match with a Taigochi</caption>
+			<image type="source">https://raw.githubusercontent.com/Appadeia/taigo/master/data/screenshots/rock-paper-scissors.png</image>
 		</screenshot>
 		<screenshot>
 			<caption>Taigo complaining</caption>
