@@ -384,6 +384,11 @@ namespace Taigo {
 				var dialog = new Gtk.MessageDialog(this, Gtk.DialogFlags.MODAL, Gtk.MessageType.WARNING, Gtk.ButtonsType.YES_NO, "Are you sure you want to delete your Taigochi and make a new one? This cannot be undone.");
 				dialog.response.connect((a) => {
 					if (a == Gtk.ResponseType.YES) {
+						global_win.content_stack.hide();
+						Timeout.add(2000, () => {
+							global_win.content_stack.show();
+							return false;
+						}, Priority.DEFAULT);
 						this.init_taikochi(true);
 						this.content_stack.set_visible_child_name("normal");
 					}
