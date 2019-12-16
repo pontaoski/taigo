@@ -3,5 +3,5 @@ namespace Taigo.Globals {
     public static GtkClutter.Embed scene;
     public static Taigochi taigochi;
     public static StateManager.StateMachine statemachine;
-    public static Gtk.Window global_win;
+    public static Taigo.Window global_win;
 }

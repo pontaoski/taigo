@@ -278,6 +278,11 @@ namespace Taigo {
                 this.care_misses++;
                 this.missed_calls = 0;
                 if (this.care_misses > 5) {
+					global_win.content_stack.hide();
+					Timeout.add(2000, () => {
+						global_win.content_stack.show();
+						return false;
+					}, Priority.DEFAULT);
                     this.ttype = Taigos.MOLICHI;
                     var pixbuf = new Gdk.Pixbuf.from_resource("/com/github/appadeia/Taigo/images/bgs/graveyard.svg");
                     var img = new Clutter.Image();

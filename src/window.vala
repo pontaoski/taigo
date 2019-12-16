@@ -164,7 +164,7 @@ namespace Taigo {
 		Gtk.MenuButton hamberder;
 
 		[GtkChild]
-		Gtk.Stack content_stack;
+		public Gtk.Stack content_stack;
 
 		[GtkChild]
 		Gtk.Image taigo_sleeping;
