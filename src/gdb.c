@@ -6,6 +6,8 @@
 #include <sys/ptrace.h>
 #include <sys/wait.h>
 #include <signal.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 void seg() {
     raise(SIGSEGV);
